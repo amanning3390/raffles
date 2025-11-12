@@ -2,11 +2,13 @@
 pragma solidity ^0.8.24;
 
 import {IRaffle} from "./interfaces/IRaffle.sol";
+import {IERC20, IERC721} from "./interfaces/IERC20.sol";
 
 /**
  * @title RaffleCore
  * @notice Non-custodial raffle contract for ETH, ERC20, and ERC721 assets
  * @dev Fully decentralized with no admin controls over user funds
+ * @dev Supports ANY ERC-20 token and ANY ERC-721 NFT on Base chain
  * @author Raffles Protocol
  */
 contract RaffleCore is IRaffle {
@@ -39,9 +41,10 @@ contract RaffleCore is IRaffle {
     uint256 public accumulatedFees;
 
     /**
-     * @notice Create a new ETH raffle
+     * @notice Create a new raffle for any asset type
      * @param config Raffle configuration
      * @return raffleId The ID of the created raffle
+     * @dev Supports ETH, any ERC-20 token, and any ERC-721 NFT
      */
     function createRaffle(RaffleConfig calldata config)
         external
@@ -51,14 +54,37 @@ contract RaffleCore is IRaffle {
         // Validate configuration
         if (config.endTime <= config.startTime) revert InvalidTimeRange();
         if (config.startTime < block.timestamp) revert InvalidTimeRange();
-        if (config.assetType == AssetType.ETH && msg.value != config.assetAmount) {
-            revert InvalidAssetAmount();
-        }
         if (config.winnerCount == 0 || config.winnerCount > config.maxEntries) {
             revert InvalidAssetAmount();
         }
 
         uint256 raffleId = _raffleIdCounter++;
+
+        // Handle asset deposit based on type
+        if (config.assetType == AssetType.ETH) {
+            // ETH raffle - require exact amount sent
+            if (msg.value != config.assetAmount) revert InvalidAssetAmount();
+
+        } else if (config.assetType == AssetType.ERC20) {
+            // ERC-20 token raffle - transfer from creator to contract
+            if (config.assetContract == address(0)) revert InvalidAssetAmount();
+            if (config.assetAmount == 0) revert InvalidAssetAmount();
+
+            IERC20 token = IERC20(config.assetContract);
+
+            // Transfer tokens from creator to contract (requires prior approval)
+            bool success = token.transferFrom(msg.sender, address(this), config.assetAmount);
+            require(success, "Token transfer failed");
+
+        } else if (config.assetType == AssetType.ERC721) {
+            // ERC-721 NFT raffle - transfer NFT from creator to contract
+            if (config.assetContract == address(0)) revert InvalidAssetAmount();
+
+            IERC721 nft = IERC721(config.assetContract);
+
+            // Transfer NFT to contract (requires prior approval)
+            nft.safeTransferFrom(msg.sender, address(this), config.assetTokenId);
+        }
 
         // Store raffle configuration
         raffles[raffleId] = RaffleConfig({
@@ -160,6 +186,7 @@ contract RaffleCore is IRaffle {
     /**
      * @notice Claim prize as winner
      * @param raffleId The raffle to claim from
+     * @dev Transfers ETH, ERC-20 tokens, or ERC-721 NFTs based on asset type
      */
     function claimPrize(uint256 raffleId) external {
         RaffleConfig storage raffle = raffles[raffleId];
@@ -171,9 +198,11 @@ contract RaffleCore is IRaffle {
         // Check if caller is a winner
         address[] memory raffleWinners = winners[raffleId];
         bool isWinner = false;
+        uint256 winnerIndex = 0;
         for (uint256 i = 0; i < raffleWinners.length; i++) {
             if (raffleWinners[i] == msg.sender) {
                 isWinner = true;
+                winnerIndex = i;
                 break;
             }
         }
@@ -182,24 +211,40 @@ contract RaffleCore is IRaffle {
         // Mark as claimed
         prizeClaimed[raffleId][msg.sender] = true;
 
-        // Transfer prize (split if multiple winners)
-        uint256 prizeAmount = raffle.assetAmount / raffle.winnerCount;
-
+        // Transfer prize based on asset type
         if (raffle.assetType == AssetType.ETH) {
+            // ETH prize - split among winners
+            uint256 prizeAmount = raffle.assetAmount / raffle.winnerCount;
             (bool success, ) = payable(msg.sender).call{value: prizeAmount}("");
-            require(success, "Transfer failed");
+            require(success, "ETH transfer failed");
+
+        } else if (raffle.assetType == AssetType.ERC20) {
+            // ERC-20 token prize - split among winners
+            uint256 prizeAmount = raffle.assetAmount / raffle.winnerCount;
+            IERC20 token = IERC20(raffle.assetContract);
+            bool success = token.transfer(msg.sender, prizeAmount);
+            require(success, "Token transfer failed");
+
+        } else if (raffle.assetType == AssetType.ERC721) {
+            // ERC-721 NFT prize - only first winner gets NFT (can't split NFTs)
+            // For NFT raffles, winnerCount should be 1
+            if (winnerIndex == 0) {
+                IERC721 nft = IERC721(raffle.assetContract);
+                nft.safeTransferFrom(address(this), msg.sender, raffle.assetTokenId);
+            }
         }
-        // TODO: Add ERC20 and ERC721 support in next milestone
 
-        // Transfer entry fees to creator (minus platform fee)
-        uint256 totalFees = totalEntries[raffleId] * raffle.entryFee;
-        uint256 platformFee = (totalFees * PLATFORM_FEE_BPS) / BPS_DENOMINATOR;
-        uint256 creatorFee = totalFees - platformFee;
+        // Transfer entry fees to creator on first claim (minus platform fee)
+        if (winnerIndex == 0) {
+            uint256 totalFees = totalEntries[raffleId] * raffle.entryFee;
+            uint256 platformFee = (totalFees * PLATFORM_FEE_BPS) / BPS_DENOMINATOR;
+            uint256 creatorFee = totalFees - platformFee;
 
-        accumulatedFees += platformFee;
+            accumulatedFees += platformFee;
 
-        (bool successFee, ) = payable(raffle.creator).call{value: creatorFee}("");
-        require(successFee, "Fee transfer failed");
+            (bool successFee, ) = payable(raffle.creator).call{value: creatorFee}("");
+            require(successFee, "Fee transfer failed");
+        }
 
         emit PrizeClaimed(raffleId, msg.sender);
     }
@@ -207,6 +252,7 @@ contract RaffleCore is IRaffle {
     /**
      * @notice Cancel raffle (only creator, only if no entries)
      * @param raffleId The raffle to cancel
+     * @dev Refunds the prize asset to creator
      */
     function cancelRaffle(uint256 raffleId) external {
         RaffleConfig storage raffle = raffles[raffleId];
@@ -217,12 +263,20 @@ contract RaffleCore is IRaffle {
 
         raffle.status = RaffleStatus.Cancelled;
 
-        // Refund creator
+        // Refund creator based on asset type
         if (raffle.assetType == AssetType.ETH) {
             (bool success, ) = payable(raffle.creator).call{value: raffle.assetAmount}("");
-            require(success, "Refund failed");
+            require(success, "ETH refund failed");
+
+        } else if (raffle.assetType == AssetType.ERC20) {
+            IERC20 token = IERC20(raffle.assetContract);
+            bool success = token.transfer(raffle.creator, raffle.assetAmount);
+            require(success, "Token refund failed");
+
+        } else if (raffle.assetType == AssetType.ERC721) {
+            IERC721 nft = IERC721(raffle.assetContract);
+            nft.safeTransferFrom(address(this), raffle.creator, raffle.assetTokenId);
         }
-        // TODO: Add ERC20 and ERC721 refund support
 
         emit RaffleCancelled(raffleId);
     }
@@ -272,5 +326,18 @@ contract RaffleCore is IRaffle {
 
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Withdrawal failed");
+    }
+
+    /**
+     * @notice ERC-721 receiver to accept NFT transfers
+     * @dev Required for safeTransferFrom to work
+     */
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes calldata
+    ) external pure returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }

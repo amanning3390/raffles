@@ -18,11 +18,15 @@ This directory contains the smart contracts that power the Raffles platform. All
 
 ### Key Features
 
-✅ **ETH Raffles**: Native ETH prize raffles
+✅ **Multi-Asset Support**: Raffle ANY asset on Base
+  - **ETH**: Native ETH prize raffles
+  - **ERC-20 Tokens**: Any token (USDC, WETH, custom tokens, etc.)
+  - **ERC-721 NFTs**: Any NFT collection on Base
 ✅ **Customizable Parameters**: Entry fees, max entries, duration, winners
 ✅ **Provably Fair**: Random winner selection using block data
-✅ **Platform Fees**: 0.5% fee for sustainability
+✅ **Platform Fees**: 0.5% fee for sustainability (ETH only)
 ✅ **Emergency Cancellation**: Creators can cancel if no entries
+✅ **Non-Custodial**: Direct transfers via ERC-20/ERC-721 standard interfaces
 
 ## Development
 
@@ -117,22 +121,64 @@ RaffleCore
 - Minimal external calls
 - Optimized loops
 
+## Supported Assets
+
+### ETH Raffles
+```solidity
+// Creator deposits ETH when creating raffle
+createRaffle({
+    assetType: AssetType.ETH,
+    assetAmount: 1 ether,
+    // ... other params
+}) payable
+```
+
+### ERC-20 Token Raffles (ANY token on Base)
+```solidity
+// Examples: USDC, WETH, DAI, or custom tokens
+// Step 1: Approve contract to spend tokens
+token.approve(raffleContract, amount);
+
+// Step 2: Create raffle (contract pulls tokens)
+createRaffle({
+    assetType: AssetType.ERC20,
+    assetContract: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, // USDC on Base
+    assetAmount: 100 * 10**6, // 100 USDC
+    // ... other params
+})
+```
+
+### ERC-721 NFT Raffles (ANY NFT collection)
+```solidity
+// Examples: Any NFT collection deployed on Base
+// Step 1: Approve contract to transfer NFT
+nft.approve(raffleContract, tokenId);
+// OR setApprovalForAll(raffleContract, true);
+
+// Step 2: Create raffle (contract pulls NFT)
+createRaffle({
+    assetType: AssetType.ERC721,
+    assetContract: 0x..., // NFT contract address
+    assetTokenId: 123,
+    assetAmount: 1, // Always 1 for NFTs
+    // ... other params
+})
+```
+
 ## Roadmap
 
-### Phase 2.1 (Current)
+### Phase 2 (Complete ✅)
 - [x] ETH raffle support
-- [x] Basic winner selection
-- [x] Entry and claiming logic
+- [x] ERC-721 (NFT) raffle support
+- [x] ERC-20 (Token) raffle support
+- [x] Winner selection and claiming logic
+- [x] Multi-asset prize support
 
-### Phase 2.2
-- [ ] ERC-721 (NFT) raffle support
-- [ ] ERC-20 (Token) raffle support
-- [ ] Token-gating support
-
-### Phase 2.3
-- [ ] Chainlink VRF integration
+### Phase 3 (Next)
+- [ ] Token-gating support (require NFT/token to enter)
+- [ ] Chainlink VRF integration for high-value raffles
 - [ ] Multi-asset bundle raffles
-- [ ] Allowlist support
+- [ ] Allowlist support (whitelist addresses)
 
 ## License
 
