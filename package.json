@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@coinbase/onchainkit": "^1.1.2",
+    "@neynar/react": "^1.2.22",
     "@tailwindcss/postcss": "^4.1.17",
     "@tanstack/react-query": "^5.90.8",
     "@types/node": "^24.10.1",
