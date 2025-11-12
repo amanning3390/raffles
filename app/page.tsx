@@ -1,27 +1,38 @@
+import { Navbar } from '@/components/Navbar';
+import Link from 'next/link';
+
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="max-w-4xl w-full text-center space-y-8 animate-fade-in">
-        <div className="space-y-4">
-          <h1 className="text-6xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Raffles
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Create and enter non-custodial raffles on Base.
-            Raffle NFTs, tokens, or ETH with complete transparency.
-          </p>
-        </div>
+    <>
+      <Navbar />
+      <main className="flex min-h-screen flex-col items-center justify-center p-8 pt-24">
+        <div className="max-w-4xl w-full text-center space-y-8 animate-fade-in">
+          <div className="space-y-4">
+            <h1 className="text-6xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Raffles
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Create and enter non-custodial raffles on Base.
+              Raffle NFTs, tokens, or ETH with complete transparency.
+            </p>
+          </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <div className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition cursor-not-allowed opacity-50">
-            Connect Wallet (Coming Soon)
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Browse Raffles
+            </Link>
+            <Link
+              href="/create"
+              className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-900 transition"
+            >
+              Create Raffle
+            </Link>
           </div>
-          <div className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-900 transition cursor-not-allowed opacity-50">
-            Browse Raffles (Coming Soon)
-          </div>
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
           <div className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg space-y-2">
@@ -54,5 +65,6 @@ export default function HomePage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

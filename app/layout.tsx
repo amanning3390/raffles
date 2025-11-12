@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import '@coinbase/onchainkit/styles.css';
 import './globals.css';
+import { Providers } from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: 'Raffles - Non-Custodial Raffle Platform on Base',
@@ -15,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased min-h-screen">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
