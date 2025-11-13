@@ -23,13 +23,13 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               href="/"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
             >
               Browse
             </Link>
             <Link
               href="/create"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
             >
               Create
             </Link>
