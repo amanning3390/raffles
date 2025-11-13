@@ -6,6 +6,7 @@ import { base } from 'wagmi/chains';
 import { WagmiProvider } from 'wagmi';
 import { config } from '@/lib/wagmi';
 import { ReactNode } from 'react';
+import { ToastProvider } from './ui/toast';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -26,7 +27,7 @@ export function Providers({ children }: { children: ReactNode }) {
             },
           }}
         >
-          {children}
+          <ToastProvider>{children}</ToastProvider>
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
