@@ -2,6 +2,7 @@
 
 import { Navbar } from '@/components/Navbar';
 import { RaffleCard } from '@/components/raffle/RaffleCard';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AssetType } from '@/lib/contract';
 import { useState } from 'react';
@@ -70,7 +71,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12">
+      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -87,24 +88,24 @@ export default function HomePage() {
 
           {/* Stats Banner */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-lg">
+            <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{mockRaffles.length}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Active Raffles</div>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-lg">
+            </Card>
+            <Card className="text-center bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200 dark:border-purple-800">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {mockRaffles.reduce((acc, r) => acc + r.entries, 0)}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Total Entries</div>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 rounded-lg">
+            </Card>
+            <Card className="text-center bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">2.1 ETH</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Total Value</div>
-            </div>
-            <div className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 rounded-lg">
+            </Card>
+            <Card className="text-center bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-orange-200 dark:border-orange-800">
               <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">24h</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Avg Duration</div>
-            </div>
+            </Card>
           </div>
 
           {/* Filters */}
@@ -147,16 +148,16 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400 text-lg">No raffles found</p>
-              <Link href="/create" className="mt-4 inline-block">
+            <Card className="text-center py-12">
+              <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">No raffles found</p>
+              <Link href="/create">
                 <Button>Create the First Raffle</Button>
               </Link>
-            </div>
+            </Card>
           )}
 
           {/* Info Banner */}
-          <div className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-xl">
+          <Card className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-blue-200 dark:border-purple-800">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="text-3xl mb-2">🔒</div>
@@ -180,7 +181,7 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </main>
     </>
