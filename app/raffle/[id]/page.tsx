@@ -64,10 +64,10 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12">
-        <div className="max-w-6xl mx-auto">
+      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
+        <div className="max-w-7xl mx-auto">
           {/* Back Button */}
-          <Link href="/" className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors mb-6">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>

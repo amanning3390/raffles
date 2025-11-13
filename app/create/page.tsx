@@ -34,8 +34,8 @@ export default function CreateRafflePage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen pt-24 px-4">
-          <div className="max-w-2xl mx-auto">
+        <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
+          <div className="max-w-7xl mx-auto">
             <Card>
               <div className="text-center py-12">
                 <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
@@ -52,8 +52,8 @@ export default function CreateRafflePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12">
-        <div className="max-w-3xl mx-auto">
+      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Create a Raffle</h1>
@@ -68,9 +68,9 @@ export default function CreateRafflePage() {
               {[1, 2, 3].map((s) => (
                 <div key={s} className="flex items-center flex-1">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-200 ${
                       step >= s
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
                         : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                     }`}
                   >
@@ -78,8 +78,8 @@ export default function CreateRafflePage() {
                   </div>
                   {s < 3 && (
                     <div
-                      className={`flex-1 h-1 mx-2 ${
-                        step > s ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-800'
+                      className={`flex-1 h-1 mx-2 transition-all duration-200 ${
+                        step > s ? 'bg-gradient-to-r from-blue-600 to-purple-600' : 'bg-gray-200 dark:bg-gray-800'
                       }`}
                     ></div>
                   )}
@@ -87,9 +87,9 @@ export default function CreateRafflePage() {
               ))}
             </div>
             <div className="flex justify-between mt-2 text-sm">
-              <span className={step >= 1 ? 'text-blue-600 font-medium' : 'text-gray-500'}>Asset</span>
-              <span className={step >= 2 ? 'text-blue-600 font-medium' : 'text-gray-500'}>Details</span>
-              <span className={step >= 3 ? 'text-blue-600 font-medium' : 'text-gray-500'}>Review</span>
+              <span className={step >= 1 ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-500'}>Asset</span>
+              <span className={step >= 2 ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-500'}>Details</span>
+              <span className={step >= 3 ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-500'}>Review</span>
             </div>
           </div>
 

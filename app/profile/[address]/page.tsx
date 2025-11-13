@@ -68,15 +68,15 @@ export default function ProfilePage({ params }: { params: { address: string } })
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12">
-        <div className="max-w-6xl mx-auto">
+      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
+        <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
           <Card className="mb-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full"></div>
                 <div>
-                  <h1 className="text-2xl font-bold mb-1">
+                  <h1 className="text-4xl font-bold mb-1">
                     {isOwnProfile ? 'Your Profile' : 'User Profile'}
                   </h1>
                   <p className="font-mono text-sm text-gray-600 dark:text-gray-400">
@@ -94,31 +94,31 @@ export default function ProfilePage({ params }: { params: { address: string } })
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <Card className="text-center">
+            <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {mockStats.rafflesCreated}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Created</div>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200 dark:border-purple-800">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {mockStats.rafflesEntered}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Entered</div>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {mockStats.totalWon}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Won</div>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-orange-200 dark:border-orange-800">
               <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                 {mockStats.totalSpent}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Spent</div>
             </Card>
-            <Card className="text-center">
+            <Card className="text-center bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 border-pink-200 dark:border-pink-800">
               <div className="text-2xl font-bold text-pink-600 dark:text-pink-400">
                 {mockStats.winRate}
               </div>
@@ -130,9 +130,9 @@ export default function ProfilePage({ params }: { params: { address: string } })
           <div className="flex gap-2 mb-6 border-b dark:border-gray-800">
             <button
               onClick={() => setActiveTab('created')}
-              className={`px-4 py-2 font-semibold transition-colors border-b-2 ${
+              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
                 activeTab === 'created'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                   : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
@@ -140,9 +140,9 @@ export default function ProfilePage({ params }: { params: { address: string } })
             </button>
             <button
               onClick={() => setActiveTab('entered')}
-              className={`px-4 py-2 font-semibold transition-colors border-b-2 ${
+              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
                 activeTab === 'entered'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                   : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
@@ -150,9 +150,9 @@ export default function ProfilePage({ params }: { params: { address: string } })
             </button>
             <button
               onClick={() => setActiveTab('won')}
-              className={`px-4 py-2 font-semibold transition-colors border-b-2 ${
+              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
                 activeTab === 'won'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                   : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
               }`}
             >
