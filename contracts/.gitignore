@@ -1,0 +1,14 @@
+# Foundry
+out/
+cache/
+broadcast/
+
+# Dotenv file
+.env
+
+# Dependencies
+lib/
+
+# IDE
+.vscode/
+.idea/

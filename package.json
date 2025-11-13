@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup": "./scripts/post-deploy-setup.sh"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@coinbase/onchainkit": "^1.1.2",
+    "@neynar/react": "^1.2.22",
     "@tailwindcss/postcss": "^4.1.17",
+    "@tanstack/react-query": "^5.90.8",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.4",
     "@types/react-dom": "^19.2.3",
@@ -35,6 +39,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "viem": "^2.39.0",
+    "wagmi": "^2.19.3"
   }
 }
