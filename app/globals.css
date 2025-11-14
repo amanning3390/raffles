@@ -40,7 +40,9 @@ body {
   }
 
   .glass-effect {
-    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 dark:border-gray-800/20;
+    @apply backdrop-blur-xl border;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   .gradient-border {
@@ -107,4 +109,12 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* Dark mode glass effect */
+@media (prefers-color-scheme: dark) {
+  .glass-effect {
+    background-color: rgba(17, 24, 39, 0.8);
+    border-color: rgba(31, 41, 55, 0.2);
+  }
 }
