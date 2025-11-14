@@ -70,35 +70,40 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white dark:bg-gray-950">
+      <main className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
         {/* Hero Section */}
-        <section className="pt-32 pb-24 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center max-w-4xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-full mb-6 text-sm font-medium text-blue-700 dark:text-blue-300">
-                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+        <section className="relative pt-32 pb-24 px-4 overflow-hidden">
+          {/* Subtle background accent */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/30 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/10 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative">
+            <div className="text-center max-w-4xl mx-auto mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 shadow-lg shadow-blue-500/10 dark:shadow-blue-500/5 border border-blue-100 dark:border-blue-900 rounded-full mb-8 text-sm font-semibold text-blue-700 dark:text-blue-300 backdrop-blur-sm">
+                <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
                 Non-Custodial · No KYC
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 dark:text-white">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 text-gray-900 dark:text-white tracking-tight">
                 Raffle Anything
-                <span className="block text-blue-600 dark:text-blue-400">on Base</span>
+                <span className="block mt-2 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent">
+                  on Base
+                </span>
               </h1>
 
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+              <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
                 Create and enter raffles for ETH, tokens, and NFTs. 100% decentralized with zero platform custody.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/create">
-                  <Button size="lg" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto px-8 py-6 text-lg font-semibold shadow-xl shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300">
                     Create Raffle
                   </Button>
                 </Link>
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto px-8 py-6 text-lg font-semibold bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 border-2"
                   onClick={() => {
                     document.getElementById('raffles-section')?.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -109,83 +114,83 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              <div className="group bg-white dark:bg-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-2xl p-8 text-center transition-all duration-300 hover:-translate-y-1">
+                <div className="text-4xl font-black text-gray-900 dark:text-white mb-2 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   {mockRaffles.length}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Active</div>
+                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Active Raffles</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="group bg-white dark:bg-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-2xl p-8 text-center transition-all duration-300 hover:-translate-y-1">
+                <div className="text-4xl font-black text-gray-900 dark:text-white mb-2 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   {mockRaffles.reduce((acc, r) => acc + r.entries, 0)}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Entries</div>
+                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Entries</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="group bg-white dark:bg-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-2xl p-8 text-center transition-all duration-300 hover:-translate-y-1">
+                <div className="text-4xl font-black text-gray-900 dark:text-white mb-2 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   2.1 ETH
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Volume</div>
+                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prize Volume</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="group bg-white dark:bg-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-2xl p-8 text-center transition-all duration-300 hover:-translate-y-1">
+                <div className="text-4xl font-black text-gray-900 dark:text-white mb-2 bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   24h
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Avg Time</div>
+                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Avg Duration</div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Raffles Section */}
-        <section id="raffles-section" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
+        <section id="raffles-section" className="py-24 px-4 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Active Raffles</h2>
-              <p className="text-gray-600 dark:text-gray-400">
+            <div className="mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-3 text-gray-900 dark:text-white tracking-tight">Active Raffles</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Browse and enter live raffles on Base
               </p>
             </div>
 
             {/* Filters */}
-            <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+            <div className="flex gap-3 mb-10 overflow-x-auto pb-2">
               <button
-                className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap ${
                   filter === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                    : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-800 hover:scale-105'
                 }`}
                 onClick={() => setFilter('all')}
               >
                 All Raffles
               </button>
               <button
-                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap ${
                   filter === AssetType.ETH
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                    : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-800 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ETH)}
               >
                 ETH
               </button>
               <button
-                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap ${
                   filter === AssetType.ERC20
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                    : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-800 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ERC20)}
               >
                 Tokens
               </button>
               <button
-                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap ${
                   filter === AssetType.ERC721
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                    : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-800 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ERC721)}
               >
@@ -201,11 +206,11 @@ export default function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20">
-                <div className="text-5xl mb-4">🎟️</div>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">No raffles found</p>
+              <div className="text-center py-24 bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800">
+                <div className="text-6xl mb-6">🎟️</div>
+                <p className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-8">No raffles found</p>
                 <Link href="/create">
-                  <Button>Create Raffle</Button>
+                  <Button className="shadow-xl shadow-blue-500/20">Create Raffle</Button>
                 </Link>
               </div>
             )}
@@ -213,36 +218,43 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-4 bg-white dark:bg-gray-950">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white tracking-tight">Why Choose Raffles</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto">
+                Built on Base for speed, security, and true decentralization
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              <div className="group bg-white dark:bg-gray-900 rounded-2xl p-10 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
                   🔒
                 </div>
-                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Non-Custodial</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  All funds secured in smart contracts with zero platform custody
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white text-center">Non-Custodial</h3>
+                <p className="text-base text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                  All funds secured in smart contracts with zero platform custody. You control your assets.
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              <div className="group bg-white dark:bg-gray-900 rounded-2xl p-10 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
                   🎲
                 </div>
-                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Provably Fair</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Transparent winner selection verifiable on-chain
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white text-center">Provably Fair</h3>
+                <p className="text-base text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                  Transparent winner selection verifiable on-chain. No manipulation, guaranteed fairness.
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+              <div className="group bg-white dark:bg-gray-900 rounded-2xl p-10 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 hover:shadow-2xl hover:shadow-gray-300/50 dark:hover:shadow-gray-900/50 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
                   ⚡
                 </div>
-                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Low Fees</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Only 0.5% platform fee on Base network
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white text-center">Low Fees</h3>
+                <p className="text-base text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                  Only 0.5% platform fee on Base network. Fast transactions, minimal costs.
                 </p>
               </div>
             </div>
