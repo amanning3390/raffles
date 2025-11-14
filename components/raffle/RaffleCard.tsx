@@ -70,7 +70,7 @@ export function RaffleCard({
   const progressPercentage = (entries / maxEntries) * 100;
 
   return (
-    <Card hover className="p-0 overflow-hidden group">
+    <Card className="p-0 overflow-hidden group">
       {/* Prize Banner */}
       <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-6 text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>

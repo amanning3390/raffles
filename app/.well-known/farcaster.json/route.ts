@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-function withValidProperties(properties: Record<string, undefined | string | string[]>) {
+function withValidProperties(properties: Record<string, undefined | string | string[] | boolean>) {
   return Object.fromEntries(
-    Object.entries(properties).filter(([_, value]) => 
-      Array.isArray(value) ? value.length > 0 : !!value
+    Object.entries(properties).filter(([_, value]) =>
+      Array.isArray(value) ? value.length > 0 : value !== undefined && value !== null && value !== ''
     )
   );
 }

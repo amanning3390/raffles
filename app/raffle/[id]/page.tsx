@@ -409,7 +409,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
               <Card className="animate-slide-up">
                 <div className="text-center mb-8">
                   <div className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-                    {timeRemaining()}
+                    {timeRemaining}
                   </div>
                   <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Time Remaining</div>
                 </div>
@@ -525,7 +525,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
               </Card>
 
               {/* Info Card */}
-              <Card gradient className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              <Card className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
                 <h4 className="font-bold text-lg mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                   <span className="text-2xl">ℹ️</span>
                   How it Works

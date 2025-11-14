@@ -71,7 +71,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
       <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
         <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
-          <Card gradient className="mb-8 animate-slide-up">
+          <Card className="mb-8 animate-slide-up">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex items-center gap-5">
                 <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shadow-lg shadow-blue-500/30">
@@ -96,31 +96,31 @@ export default function ProfilePage({ params }: { params: { address: string } })
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <Card hover className="text-center p-6 border-2 border-blue-200 dark:border-blue-800">
+            <Card className="text-center p-6 border-2 border-blue-200 dark:border-blue-800">
               <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent">
                 {mockStats.rafflesCreated}
               </div>
               <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Created</div>
             </Card>
-            <Card hover className="text-center p-6 border-2 border-purple-200 dark:border-purple-800">
+            <Card className="text-center p-6 border-2 border-purple-200 dark:border-purple-800">
               <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-purple-600 to-purple-700 bg-clip-text text-transparent">
                 {mockStats.rafflesEntered}
               </div>
               <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Entered</div>
             </Card>
-            <Card hover className="text-center p-6 border-2 border-green-200 dark:border-green-800">
+            <Card className="text-center p-6 border-2 border-green-200 dark:border-green-800">
               <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-green-600 to-green-700 bg-clip-text text-transparent">
                 {mockStats.totalWon}
               </div>
               <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Won</div>
             </Card>
-            <Card hover className="text-center p-6 border-2 border-orange-200 dark:border-orange-800">
+            <Card className="text-center p-6 border-2 border-orange-200 dark:border-orange-800">
               <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-orange-600 to-orange-700 bg-clip-text text-transparent">
                 {mockStats.totalSpent}
               </div>
               <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Spent</div>
             </Card>
-            <Card hover className="text-center p-6 border-2 border-pink-200 dark:border-pink-800">
+            <Card className="text-center p-6 border-2 border-pink-200 dark:border-pink-800">
               <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-pink-600 to-pink-700 bg-clip-text text-transparent">
                 {mockStats.winRate}
               </div>
@@ -166,7 +166,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
           {activeTab === 'created' && (
             <div className="space-y-4 animate-fade-in">
               {mockUserRaffles.created.map((raffle, index) => (
-                <Card key={raffle.id} hover className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={raffle.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-center gap-5 flex-1">
                       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-3xl shadow-lg">
@@ -212,7 +212,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
           {activeTab === 'entered' && (
             <div className="space-y-4 animate-fade-in">
               {mockUserRaffles.entered.map((raffle, index) => (
-                <Card key={raffle.id} hover className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={raffle.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-center gap-5 flex-1">
                       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl shadow-lg">
@@ -255,7 +255,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
           {activeTab === 'won' && (
             <div className="space-y-4 animate-fade-in">
               {mockUserRaffles.won.map((raffle, index) => (
-                <Card key={raffle.id} hover className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={raffle.id} className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-center gap-5 flex-1">
                       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-3xl shadow-lg">

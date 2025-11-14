@@ -5,7 +5,14 @@
       "Bash(dir:*)",
       "Bash(cat:*)",
       "Bash(claude --version)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(claude update)",
+      "Bash(claude migrate-installer:*)",
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []

@@ -3,6 +3,7 @@
 import { Navbar } from '@/components/Navbar';
 import { RaffleCard } from '@/components/raffle/RaffleCard';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { AssetType } from '@/lib/contract';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -73,7 +74,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
         {/* Hero Section */}
         <section className="relative pt-32 pb-28 px-4 overflow-hidden">
-          {/* Animated background gradient */}
+          {/* Animated background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 dark:from-blue-500/10 dark:via-transparent dark:to-purple-500/10 pointer-events-none" />
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none" />
@@ -117,25 +118,25 @@ export default function HomePage() {
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto animate-slide-up">
-              <Card hover className="text-center p-6 md:p-8">
+              <Card className="text-center p-6 md:p-8">
                 <div className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   {mockRaffles.length}
                 </div>
                 <div className="text-xs md:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Active Raffles</div>
               </Card>
-              <Card hover className="text-center p-6 md:p-8">
+              <Card className="text-center p-6 md:p-8">
                 <div className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   {mockRaffles.reduce((acc, r) => acc + r.entries, 0)}
                 </div>
                 <div className="text-xs md:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Entries</div>
               </Card>
-              <Card hover className="text-center p-6 md:p-8">
+              <Card className="text-center p-6 md:p-8">
                 <div className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-br from-pink-600 to-orange-600 bg-clip-text text-transparent">
                   2.1 ETH
                 </div>
                 <div className="text-xs md:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prize Volume</div>
               </Card>
-              <Card hover className="text-center p-6 md:p-8">
+              <Card className="text-center p-6 md:p-8">
                 <div className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-br from-orange-600 to-yellow-600 bg-clip-text text-transparent">
                   24h
                 </div>
@@ -251,7 +252,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-              <Card hover gradient className="text-center p-8 md:p-10 animate-slide-up">
+              <Card className="text-center p-8 md:p-10 animate-slide-up">
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
                   🔒
                 </div>
@@ -261,7 +262,7 @@ export default function HomePage() {
                 </p>
               </Card>
 
-              <Card hover gradient className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+              <Card className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
                   🎲
                 </div>
@@ -271,7 +272,7 @@ export default function HomePage() {
                 </p>
               </Card>
 
-              <Card hover gradient className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <Card className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
                   ⚡
                 </div>

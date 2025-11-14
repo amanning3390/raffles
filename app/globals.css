@@ -1,37 +1,71 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-background: #ffffff;
-  --color-foreground: #0a0a0a;
-  --color-primary: #0052FF;
-  --color-primary-foreground: #FFFFFF;
-  --color-secondary: #855DCD;
-  --color-secondary-foreground: #FFFFFF;
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 262 52% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221 83% 53%;
+    --radius: 0.75rem;
   }
 
-  @theme {
-    --color-background: #0a0a0a;
-    --color-foreground: #ededed;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 240 10% 3.9%;
+      --foreground: 0 0% 98%;
+      --card: 240 10% 3.9%;
+      --card-foreground: 0 0% 98%;
+      --popover: 240 10% 3.9%;
+      --popover-foreground: 0 0% 98%;
+      --primary: 221 83% 53%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 262 52% 47%;
+      --secondary-foreground: 0 0% 100%;
+      --muted: 240 3.7% 15.9%;
+      --muted-foreground: 240 5% 64.9%;
+      --accent: 240 3.7% 15.9%;
+      --accent-foreground: 0 0% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 221 83% 53%;
+    }
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer utilities {
@@ -39,113 +73,101 @@ body {
     text-wrap: balance;
   }
 
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(209, 213, 219, 0.3);
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  .glass-dark {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(75, 85, 99, 0.3);
   }
 
-  .animate-scale-in {
-    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .glass-effect {
-    backdrop-filter: blur(24px);
-    border: 1px solid;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .gradient-border {
-    position: relative;
+  /* Gradient backgrounds */
+  .gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2px;
-    border-radius: 12px;
   }
 
-  .gradient-border-content {
-    background-color: white;
-    border-radius: 10px;
+  .gradient-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   }
-}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+  .gradient-base {
+    background: linear-gradient(135deg, #0052FF 0%, #00D4FF 100%);
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
+  /* Shimmer effect for loading states */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.5) 60%,
+      rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(0, 82, 255, 0.3), 0 0 40px rgba(0, 82, 255, 0.2);
+  }
+
+  .glow-secondary {
+    box-shadow: 0 0 20px rgba(133, 93, 205, 0.3), 0 0 40px rgba(133, 93, 205, 0.2);
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgb(243, 244, 246);
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(209, 213, 219);
-  border-radius: 9999px;
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(156, 163, 175);
+  background: hsl(var(--muted-foreground) / 0.5);
 }
 
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-  .glass-effect {
-    background-color: rgba(17, 24, 39, 0.8);
-    border-color: rgba(31, 41, 55, 0.2);
-  }
+/* Selection */
+::selection {
+  background-color: hsl(var(--primary) / 0.3);
+}
 
-  .gradient-border-content {
-    background-color: rgb(17, 24, 39);
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: rgb(17, 24, 39);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: rgb(55, 65, 81);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(75, 85, 99);
-  }
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }

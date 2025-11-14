@@ -520,7 +520,7 @@ export default function CreateRafflePage() {
               <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900 dark:text-white">Review & Create</h2>
 
               <div className="space-y-4 mb-8">
-                <Card gradient className="p-6 border-2 border-blue-200 dark:border-blue-800">
+                <Card className="p-6 border-2 border-blue-200 dark:border-blue-800">
                   <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                     <span className="text-2xl">💎</span>
                     Asset Details
@@ -545,7 +545,7 @@ export default function CreateRafflePage() {
                   </div>
                 </Card>
 
-                <Card gradient className="p-6 border-2 border-purple-200 dark:border-purple-800">
+                <Card className="p-6 border-2 border-purple-200 dark:border-purple-800">
                   <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                     <span className="text-2xl">🎫</span>
                     Entry Settings
@@ -566,7 +566,7 @@ export default function CreateRafflePage() {
                   </div>
                 </Card>
 
-                <Card gradient className="p-6 border-2 border-pink-200 dark:border-pink-800">
+                <Card className="p-6 border-2 border-pink-200 dark:border-pink-800">
                   <h3 className="font-bold text-lg mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                     <span className="text-2xl">⚙️</span>
                     Raffle Settings
