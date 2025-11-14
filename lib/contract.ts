@@ -2,7 +2,26 @@
  * Contract configuration and ABIs
  */
 
-export const RAFFLE_CORE_ADDRESS = process.env.NEXT_PUBLIC_RAFFLE_CORE_ADDRESS as `0x${string}`;
+const contractAddress = process.env.NEXT_PUBLIC_RAFFLE_CORE_ADDRESS;
+
+// Validate contract address (only in browser/client-side)
+if (typeof window !== 'undefined') {
+  if (!contractAddress) {
+    console.error('NEXT_PUBLIC_RAFFLE_CORE_ADDRESS is not set in environment variables');
+  } else if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
+    console.error('NEXT_PUBLIC_RAFFLE_CORE_ADDRESS is not a valid Ethereum address');
+  }
+}
+
+if (!contractAddress) {
+  throw new Error('NEXT_PUBLIC_RAFFLE_CORE_ADDRESS is not set in environment variables');
+}
+
+if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
+  throw new Error('NEXT_PUBLIC_RAFFLE_CORE_ADDRESS is not a valid Ethereum address');
+}
+
+export const RAFFLE_CORE_ADDRESS = contractAddress as `0x${string}`;
 
 // Minimal ABI for RaffleCore contract
 export const RAFFLE_CORE_ABI = [
@@ -109,6 +128,33 @@ export const RAFFLE_CORE_ABI = [
     stateMutability: 'view',
     inputs: [{ name: 'raffleId', type: 'uint256' }],
     outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    type: 'function',
+    name: 'actualWinnerCount',
+    stateMutability: 'view',
+    inputs: [{ name: 'raffleId', type: 'uint256' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    type: 'function',
+    name: 'entriesPerWallet',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'raffleId', type: 'uint256' },
+      { name: 'wallet', type: 'address' },
+    ],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    type: 'function',
+    name: 'prizeClaimed',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'raffleId', type: 'uint256' },
+      { name: 'winner', type: 'address' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
   },
   {
     type: 'event',

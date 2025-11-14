@@ -1,17 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAccount } from 'wagmi';
-import { parseEther } from 'viem';
+import { parseEther, Address, isAddress } from 'viem';
 import { AssetType } from '@/lib/contract';
+import { useCreateRaffle } from '@/hooks/useRaffleContract';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/toast';
 
 export default function CreateRafflePage() {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const router = useRouter();
+  const { showToast } = useToast();
+  const { createRaffle, isPending, isSuccess, error, hash } = useCreateRaffle();
   const [step, setStep] = useState(1);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     assetType: AssetType.ETH,
     assetContract: '',
@@ -27,8 +34,122 @@ export default function CreateRafflePage() {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear error for this field
+    if (formErrors[name]) {
+      setFormErrors({ ...formErrors, [name]: '' });
+    }
   };
+
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (!formData.assetAmount || parseFloat(formData.assetAmount) <= 0) {
+      errors.assetAmount = 'Asset amount must be greater than 0';
+    }
+
+    if (!formData.entryFee || parseFloat(formData.entryFee) <= 0) {
+      errors.entryFee = 'Entry fee must be greater than 0';
+    }
+
+    if (!formData.maxEntries || parseInt(formData.maxEntries) <= 0) {
+      errors.maxEntries = 'Max entries must be greater than 0';
+    }
+
+    if (!formData.maxEntriesPerWallet || parseInt(formData.maxEntriesPerWallet) <= 0) {
+      errors.maxEntriesPerWallet = 'Max entries per wallet must be greater than 0';
+    }
+
+    if (parseInt(formData.maxEntriesPerWallet) > parseInt(formData.maxEntries)) {
+      errors.maxEntriesPerWallet = 'Max entries per wallet cannot exceed max entries';
+    }
+
+    if (!formData.duration || parseFloat(formData.duration) <= 0) {
+      errors.duration = 'Duration must be greater than 0';
+    }
+
+    if (!formData.winnerCount || parseInt(formData.winnerCount) <= 0) {
+      errors.winnerCount = 'Winner count must be greater than 0';
+    }
+
+    if (parseInt(formData.winnerCount) > parseInt(formData.maxEntries)) {
+      errors.winnerCount = 'Winner count cannot exceed max entries';
+    }
+
+    if (formData.assetType === AssetType.ERC721 && parseInt(formData.winnerCount) !== 1) {
+      errors.winnerCount = 'NFT raffles must have exactly 1 winner';
+    }
+
+    if (formData.assetType === AssetType.ERC20 || formData.assetType === AssetType.ERC721) {
+      if (!formData.assetContract || !isAddress(formData.assetContract)) {
+        errors.assetContract = 'Valid contract address is required';
+      }
+    }
+
+    if (formData.assetType === AssetType.ERC721) {
+      if (!formData.assetTokenId || parseInt(formData.assetTokenId) < 0) {
+        errors.assetTokenId = 'Valid token ID is required';
+      }
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleCreateRaffle = async () => {
+    if (!validateForm()) {
+      showToast('Please fix form errors', 'error');
+      return;
+    }
+
+    if (!address) {
+      showToast('Wallet not connected', 'error');
+      return;
+    }
+
+    try {
+      const assetAmount = formData.assetType === AssetType.ETH
+        ? parseEther(formData.assetAmount)
+        : BigInt(formData.assetAmount);
+      
+      const entryFee = parseEther(formData.entryFee);
+      const duration = BigInt(parseInt(formData.duration));
+      const startTime = BigInt(Math.floor(Date.now() / 1000));
+      const endTime = startTime + duration * BigInt(3600);
+
+      await createRaffle({
+        assetType: formData.assetType,
+        assetContract: (formData.assetContract || '0x0000000000000000000000000000000000000000') as Address,
+        assetTokenId: BigInt(formData.assetTokenId || '0'),
+        assetAmount,
+        entryFee,
+        maxEntries: BigInt(formData.maxEntries),
+        maxEntriesPerWallet: BigInt(formData.maxEntriesPerWallet),
+        duration,
+        winnerCount: BigInt(formData.winnerCount),
+      });
+    } catch (err: any) {
+      showToast(err.message || 'Failed to create raffle', 'error');
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess && hash) {
+      showToast('Raffle created successfully!', 'success');
+      // Redirect to raffle detail page after a short delay
+      // Note: We'd need the raffle ID from events, but for now redirect to home
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
+    }
+  }, [isSuccess, hash, router, showToast]);
+
+  useEffect(() => {
+    if (error) {
+      showToast(error.message || 'Transaction failed', 'error');
+    }
+  }, [error, showToast]);
 
   if (!isConnected) {
     return (
@@ -206,6 +327,7 @@ export default function CreateRafflePage() {
                     value={formData.assetContract}
                     onChange={handleInputChange}
                     helperText="Address of the ERC-20 token contract"
+                    error={formErrors.assetContract}
                   />
                   <Input
                     label="Token Amount"
@@ -215,6 +337,7 @@ export default function CreateRafflePage() {
                     value={formData.assetAmount}
                     onChange={handleInputChange}
                     helperText="Amount of tokens (in token units)"
+                    error={formErrors.assetAmount}
                   />
                 </div>
               )}
@@ -228,6 +351,7 @@ export default function CreateRafflePage() {
                     value={formData.assetContract}
                     onChange={handleInputChange}
                     helperText="Address of the NFT collection"
+                    error={formErrors.assetContract}
                   />
                   <Input
                     label="Token ID"
@@ -237,6 +361,7 @@ export default function CreateRafflePage() {
                     value={formData.assetTokenId}
                     onChange={handleInputChange}
                     helperText="ID of the specific NFT to raffle"
+                    error={formErrors.assetTokenId}
                   />
                 </div>
               )}
@@ -264,6 +389,7 @@ export default function CreateRafflePage() {
                   value={formData.entryFee}
                   onChange={handleInputChange}
                   helperText="Cost per entry in ETH"
+                  error={formErrors.entryFee}
                 />
 
                 <Input
@@ -274,6 +400,7 @@ export default function CreateRafflePage() {
                   value={formData.maxEntries}
                   onChange={handleInputChange}
                   helperText="Maximum number of entries allowed"
+                  error={formErrors.maxEntries}
                 />
 
                 <Input
@@ -284,6 +411,7 @@ export default function CreateRafflePage() {
                   value={formData.maxEntriesPerWallet}
                   onChange={handleInputChange}
                   helperText="Maximum entries per participant"
+                  error={formErrors.maxEntriesPerWallet}
                 />
 
                 <Input
@@ -294,6 +422,7 @@ export default function CreateRafflePage() {
                   value={formData.duration}
                   onChange={handleInputChange}
                   helperText="How long the raffle will run"
+                  error={formErrors.duration}
                 />
 
                 <Input
@@ -304,6 +433,7 @@ export default function CreateRafflePage() {
                   value={formData.winnerCount}
                   onChange={handleInputChange}
                   helperText={formData.assetType === AssetType.ERC721 ? 'Must be 1 for NFTs' : 'Prize will be split among winners'}
+                  error={formErrors.winnerCount}
                 />
               </div>
 
@@ -392,8 +522,13 @@ export default function CreateRafflePage() {
                 <Button onClick={() => setStep(2)} variant="outline" className="flex-1">
                   Back
                 </Button>
-                <Button className="flex-1">
-                  Create Raffle
+                <Button 
+                  onClick={handleCreateRaffle} 
+                  className="flex-1"
+                  disabled={isPending}
+                  isLoading={isPending}
+                >
+                  {isPending ? 'Creating...' : 'Create Raffle'}
                 </Button>
               </div>
             </Card>

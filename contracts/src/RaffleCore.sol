@@ -33,12 +33,31 @@ contract RaffleCore is IRaffle {
     /// @notice Mapping of raffle ID to claimed status
     mapping(uint256 => mapping(address => bool)) public prizeClaimed;
 
+    /// @notice Mapping of raffle ID to actual winner count (may be less than requested)
+    mapping(uint256 => uint256) public actualWinnerCount;
+
+    /// @notice Mapping of raffle ID to whether entry fees have been distributed
+    mapping(uint256 => bool) public entryFeesDistributed;
+
     /// @notice Platform fee (0.5% = 50 basis points)
     uint256 public constant PLATFORM_FEE_BPS = 50;
     uint256 public constant BPS_DENOMINATOR = 10000;
 
     /// @notice Accumulated platform fees
     uint256 public accumulatedFees;
+
+    /// @notice Platform fee recipient (can be updated to DAO/multisig)
+    address public platformFeeRecipient;
+
+    /// @notice Events
+    event PlatformFeeRecipientUpdated(address indexed newRecipient);
+
+    /**
+     * @notice Constructor - sets deployer as initial platform fee recipient
+     */
+    constructor() {
+        platformFeeRecipient = msg.sender;
+    }
 
     /**
      * @notice Create a new raffle for any asset type
@@ -55,6 +74,12 @@ contract RaffleCore is IRaffle {
         if (config.endTime <= config.startTime) revert InvalidTimeRange();
         if (config.startTime < block.timestamp) revert InvalidTimeRange();
         if (config.winnerCount == 0 || config.winnerCount > config.maxEntries) {
+            revert InvalidAssetAmount();
+        }
+        if (config.entryFee == 0) revert InvalidEntryFee();
+        
+        // For NFT raffles, winnerCount must be 1 (can't split NFTs)
+        if (config.assetType == AssetType.ERC721 && config.winnerCount != 1) {
             revert InvalidAssetAmount();
         }
 
@@ -161,9 +186,12 @@ contract RaffleCore is IRaffle {
         // Select winners if there are entries
         uint256 participantCount = participants[raffleId].length;
         if (participantCount > 0) {
-            uint256 actualWinnerCount = raffle.winnerCount > participantCount
+            uint256 winnersToSelect = raffle.winnerCount > participantCount
                 ? participantCount
                 : raffle.winnerCount;
+            
+            // Store actual winner count for prize calculation
+            actualWinnerCount[raffleId] = winnersToSelect;
 
             // Simple random winner selection using blockhash
             // NOTE: For production with high value, use Chainlink VRF
@@ -171,14 +199,53 @@ contract RaffleCore is IRaffle {
                 keccak256(abi.encodePacked(block.timestamp, block.prevrandao, raffleId))
             );
 
-            for (uint256 i = 0; i < actualWinnerCount; i++) {
-                uint256 winnerIndex = (randomSeed + i) % participantCount;
-                winners[raffleId].push(participants[raffleId][winnerIndex]);
+            // Use Fisher-Yates shuffle algorithm to ensure unique winners
+            address[] memory participantPool = new address[](participantCount);
+            for (uint256 i = 0; i < participantCount; i++) {
+                participantPool[i] = participants[raffleId][i];
             }
+
+            // Shuffle and select unique winners
+            for (uint256 i = 0; i < winnersToSelect; i++) {
+                uint256 j = (uint256(keccak256(abi.encodePacked(randomSeed, i))) % (participantCount - i)) + i;
+                
+                // Swap
+                address temp = participantPool[i];
+                participantPool[i] = participantPool[j];
+                participantPool[j] = temp;
+                
+                winners[raffleId].push(participantPool[i]);
+            }
+
+            // Distribute entry fees to creator (minus platform fee)
+            uint256 totalFees = totalEntries[raffleId] * raffle.entryFee;
+            uint256 platformFee = (totalFees * PLATFORM_FEE_BPS) / BPS_DENOMINATOR;
+            uint256 creatorFee = totalFees - platformFee;
+
+            accumulatedFees += platformFee;
+            entryFeesDistributed[raffleId] = true;
+
+            (bool successFee, ) = payable(raffle.creator).call{value: creatorFee}("");
+            require(successFee, "Fee transfer failed");
 
             emit RaffleEnded(raffleId, winners[raffleId]);
         } else {
             // No entries - refund creator
+            actualWinnerCount[raffleId] = 0;
+            
+            // Refund creator based on asset type
+            if (raffle.assetType == AssetType.ETH) {
+                (bool success, ) = payable(raffle.creator).call{value: raffle.assetAmount}("");
+                require(success, "ETH refund failed");
+            } else if (raffle.assetType == AssetType.ERC20) {
+                IERC20 token = IERC20(raffle.assetContract);
+                bool success = token.transfer(raffle.creator, raffle.assetAmount);
+                require(success, "Token refund failed");
+            } else if (raffle.assetType == AssetType.ERC721) {
+                IERC721 nft = IERC721(raffle.assetContract);
+                nft.safeTransferFrom(address(this), raffle.creator, raffle.assetTokenId);
+            }
+            
             emit RaffleEnded(raffleId, new address[](0));
         }
     }
@@ -211,39 +278,40 @@ contract RaffleCore is IRaffle {
         // Mark as claimed
         prizeClaimed[raffleId][msg.sender] = true;
 
+        // Get actual winner count (may be less than requested if not enough participants)
+        uint256 winnersCount = actualWinnerCount[raffleId];
+        require(winnersCount > 0, "No winners selected");
+
         // Transfer prize based on asset type
         if (raffle.assetType == AssetType.ETH) {
-            // ETH prize - split among winners
-            uint256 prizeAmount = raffle.assetAmount / raffle.winnerCount;
+            // ETH prize - split among actual winners
+            // Handle remainder by giving it to first winner
+            uint256 basePrize = raffle.assetAmount / winnersCount;
+            uint256 remainder = raffle.assetAmount % winnersCount;
+            uint256 prizeAmount = basePrize + (winnerIndex == 0 ? remainder : 0);
+            
+            require(prizeAmount > 0, "Prize amount too small");
             (bool success, ) = payable(msg.sender).call{value: prizeAmount}("");
             require(success, "ETH transfer failed");
 
         } else if (raffle.assetType == AssetType.ERC20) {
-            // ERC-20 token prize - split among winners
-            uint256 prizeAmount = raffle.assetAmount / raffle.winnerCount;
+            // ERC-20 token prize - split among actual winners
+            // Handle remainder by giving it to first winner
+            uint256 basePrize = raffle.assetAmount / winnersCount;
+            uint256 remainder = raffle.assetAmount % winnersCount;
+            uint256 prizeAmount = basePrize + (winnerIndex == 0 ? remainder : 0);
+            
+            require(prizeAmount > 0, "Prize amount too small");
             IERC20 token = IERC20(raffle.assetContract);
             bool success = token.transfer(msg.sender, prizeAmount);
             require(success, "Token transfer failed");
 
         } else if (raffle.assetType == AssetType.ERC721) {
-            // ERC-721 NFT prize - only first winner gets NFT (can't split NFTs)
-            // For NFT raffles, winnerCount should be 1
-            if (winnerIndex == 0) {
-                IERC721 nft = IERC721(raffle.assetContract);
-                nft.safeTransferFrom(address(this), msg.sender, raffle.assetTokenId);
-            }
-        }
-
-        // Transfer entry fees to creator on first claim (minus platform fee)
-        if (winnerIndex == 0) {
-            uint256 totalFees = totalEntries[raffleId] * raffle.entryFee;
-            uint256 platformFee = (totalFees * PLATFORM_FEE_BPS) / BPS_DENOMINATOR;
-            uint256 creatorFee = totalFees - platformFee;
-
-            accumulatedFees += platformFee;
-
-            (bool successFee, ) = payable(raffle.creator).call{value: creatorFee}("");
-            require(successFee, "Fee transfer failed");
+            // ERC-721 NFT prize - only first winner gets NFT
+            // winnerCount is validated to be 1 in createRaffle, so winnerIndex should always be 0
+            require(winnerIndex == 0, "Only first winner gets NFT");
+            IERC721 nft = IERC721(raffle.assetContract);
+            nft.safeTransferFrom(address(this), msg.sender, raffle.assetTokenId);
         }
 
         emit PrizeClaimed(raffleId, msg.sender);
@@ -317,15 +385,31 @@ contract RaffleCore is IRaffle {
     }
 
     /**
-     * @notice Withdraw accumulated platform fees (DAO/multisig only)
-     * @dev This function should be controlled by a DAO or multisig in production
+     * @notice Withdraw accumulated platform fees (platform fee recipient only)
+     * @dev Only the platform fee recipient can withdraw fees
      */
     function withdrawPlatformFees() external {
+        require(msg.sender == platformFeeRecipient, "Not authorized");
+        require(platformFeeRecipient != address(0), "No recipient set");
+        
         uint256 amount = accumulatedFees;
+        require(amount > 0, "No fees to withdraw");
         accumulatedFees = 0;
 
-        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        (bool success, ) = payable(platformFeeRecipient).call{value: amount}("");
         require(success, "Withdrawal failed");
+    }
+
+    /**
+     * @notice Update platform fee recipient (current recipient only)
+     * @param newRecipient New platform fee recipient address
+     * @dev Can be updated to DAO or multisig address
+     */
+    function updatePlatformFeeRecipient(address newRecipient) external {
+        require(msg.sender == platformFeeRecipient, "Not authorized");
+        require(newRecipient != address(0), "Invalid address");
+        platformFeeRecipient = newRecipient;
+        emit PlatformFeeRecipientUpdated(newRecipient);
     }
 
     /**
