@@ -173,7 +173,7 @@ export default function CreateRafflePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-10 text-center animate-slide-up">
@@ -340,7 +340,7 @@ export default function CreateRafflePage() {
 
               {/* Asset-specific inputs */}
               {formData.assetType === AssetType.ETH && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-2xl border border-blue-200 dark:border-blue-800 bg-opacity-50 dark:bg-opacity-30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-2xl border border-blue-200 dark:border-blue-800">
                   <Input
                     label="Prize Amount (ETH)"
                     name="assetAmount"
@@ -358,7 +358,7 @@ export default function CreateRafflePage() {
               )}
 
               {formData.assetType === AssetType.ERC20 && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-2xl border border-purple-200 dark:border-purple-800 bg-opacity-50 dark:bg-opacity-30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-2xl border border-purple-200 dark:border-purple-800">
                   <Input
                     label="Token Contract Address"
                     name="assetContract"
@@ -382,7 +382,7 @@ export default function CreateRafflePage() {
               )}
 
               {formData.assetType === AssetType.ERC721 && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-950 dark:to-orange-950 rounded-2xl border border-pink-200 dark:border-pink-800 bg-opacity-50 dark:bg-opacity-30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-950 dark:to-orange-950 rounded-2xl border border-pink-200 dark:border-pink-800">
                   <Input
                     label="NFT Contract Address"
                     name="assetContract"

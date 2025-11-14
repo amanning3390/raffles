@@ -71,13 +71,13 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950">
         {/* Hero Section */}
         <section className="relative pt-32 pb-28 px-4 overflow-hidden">
           {/* Animated background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-transparent to-purple-500 dark:from-blue-500 dark:via-transparent dark:to-purple-500 bg-opacity-5 dark:bg-opacity-10 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 bg-opacity-10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400 bg-opacity-10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-transparent to-purple-500 dark:from-blue-500 dark:via-transparent dark:to-purple-500 opacity-5 dark:opacity-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-24 animate-fade-in">
@@ -168,7 +168,7 @@ export default function HomePage() {
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === 'all'
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:opacity-50'
                 }`}
                 onClick={() => setFilter('all')}
               >
@@ -181,7 +181,7 @@ export default function HomePage() {
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ETH
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:opacity-50'
                 }`}
                 onClick={() => setFilter(AssetType.ETH)}
               >
@@ -194,7 +194,7 @@ export default function HomePage() {
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ERC20
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:opacity-50'
                 }`}
                 onClick={() => setFilter(AssetType.ERC20)}
               >
@@ -207,7 +207,7 @@ export default function HomePage() {
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ERC721
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:opacity-50'
                 }`}
                 onClick={() => setFilter(AssetType.ERC721)}
               >

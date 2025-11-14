@@ -73,13 +73,13 @@ export function RaffleCard({
     <Card className="p-0 overflow-hidden group">
       {/* Prize Banner */}
       <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-6 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent bg-opacity-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent opacity-10"></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 rounded-xl bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center text-2xl shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-white opacity-20 backdrop-blur-sm flex items-center justify-center text-2xl shadow-lg">
               {getAssetIcon()}
             </div>
-            <span className="text-xs font-semibold bg-white bg-opacity-20 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white border-opacity-30">
+            <span className="text-xs font-semibold bg-white opacity-20 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white border-opacity-30">
               #{id}
             </span>
           </div>

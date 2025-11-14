@@ -187,7 +187,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
     return (
       <>
         <Navbar />
-        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ">
           <div className="max-w-7xl mx-auto">
             <Card className="text-center py-16 animate-pulse">
               <div className="text-6xl mb-4">🎟️</div>
@@ -203,7 +203,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
     return (
       <>
         <Navbar />
-        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ">
           <div className="max-w-7xl mx-auto">
             <Card className="text-center py-16 animate-fade-in">
               <div className="text-6xl mb-4">❌</div>
@@ -223,7 +223,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
     return (
       <>
         <Navbar />
-        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+        <main className="min-h-screen pt-28 px-4 pb-16 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ">
           <div className="max-w-7xl mx-auto">
             <Card className="text-center py-16 animate-fade-in">
               <div className="text-6xl mb-4">🔍</div>
@@ -250,12 +250,12 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
+      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ">
         <div className="max-w-7xl mx-auto">
           {/* Back Button */}
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 transition-all duration-200 mb-8 group"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800  transition-all duration-200 mb-8 group"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -269,15 +269,15 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
               {/* Prize Card */}
               <Card className="overflow-hidden animate-slide-up">
                 <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 -m-6 mb-6 p-8 md:p-10 text-white overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent bg-opacity-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent opacity-10"></div>
                   <div className="relative z-10">
                     <div className="flex items-start justify-between mb-6">
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center text-4xl md:text-5xl shadow-lg">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white opacity-20 backdrop-blur-sm flex items-center justify-center text-4xl md:text-5xl shadow-lg">
                         {raffle.assetType === AssetType.ETH && '💎'}
                         {raffle.assetType === AssetType.ERC20 && '🪙'}
                         {raffle.assetType === AssetType.ERC721 && '🖼️'}
                       </div>
-                      <span className="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-full text-sm font-semibold border border-white border-opacity-30">
+                      <span className="px-4 py-2 bg-white opacity-20 backdrop-blur-sm rounded-full text-sm font-semibold border border-white border-opacity-30">
                         #{params.id}
                       </span>
                     </div>
@@ -359,7 +359,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
 
               {/* Winners Display */}
               {raffle.status === RaffleStatus.Ended && winners && winners.length > 0 && (
-                <Card className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 bg-opacity-50 dark:bg-opacity-30 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                <Card className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950  animate-slide-up" style={{ animationDelay: '0.2s' }}>
                   <h3 className="font-bold text-xl mb-6 text-green-700 dark:text-green-400 flex items-center gap-2">
                     <span className="text-3xl">🏆</span>
                     Winners
@@ -454,7 +454,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                         />
                       </>
                     ) : raffle.status === RaffleStatus.Ended && isWinner && !hasClaimed ? (
-                      <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 bg-opacity-50 dark:bg-opacity-30 rounded-2xl border-2 border-green-500 shadow-lg">
+                      <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950  rounded-2xl border-2 border-green-500 shadow-lg">
                         <p className="text-base font-bold text-green-800 dark:text-green-200 mb-4 text-center">
                           🎉 Congratulations! You won!
                         </p>
