@@ -68,92 +68,94 @@ export default function ProfilePage({ params }: { params: { address: string } })
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
+      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
         <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
-          <Card className="mb-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full"></div>
+          <Card gradient className="mb-8 animate-slide-up">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex items-center gap-5">
+                <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shadow-lg shadow-blue-500/30">
+                  👤
+                </div>
                 <div>
-                  <h1 className="text-4xl font-bold mb-1">
+                  <h1 className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                     {isOwnProfile ? 'Your Profile' : 'User Profile'}
                   </h1>
-                  <p className="font-mono text-sm text-gray-600 dark:text-gray-400">
+                  <p className="font-mono text-sm font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-lg inline-block">
                     {params.address.slice(0, 6)}...{params.address.slice(-4)}
                   </p>
                 </div>
               </div>
               {isOwnProfile && (
                 <Link href="/create">
-                  <Button>Create Raffle</Button>
+                  <Button variant="gradient" size="lg">Create Raffle</Button>
                 </Link>
               )}
             </div>
           </Card>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <Card hover className="text-center p-6 border-2 border-blue-200 dark:border-blue-800">
+              <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent">
                 {mockStats.rafflesCreated}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Created</div>
+              <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Created</div>
             </Card>
-            <Card className="text-center bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200 dark:border-purple-800">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+            <Card hover className="text-center p-6 border-2 border-purple-200 dark:border-purple-800">
+              <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-purple-600 to-purple-700 bg-clip-text text-transparent">
                 {mockStats.rafflesEntered}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Entered</div>
+              <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Entered</div>
             </Card>
-            <Card className="text-center bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <Card hover className="text-center p-6 border-2 border-green-200 dark:border-green-800">
+              <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-green-600 to-green-700 bg-clip-text text-transparent">
                 {mockStats.totalWon}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Won</div>
+              <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Won</div>
             </Card>
-            <Card className="text-center bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-orange-200 dark:border-orange-800">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+            <Card hover className="text-center p-6 border-2 border-orange-200 dark:border-orange-800">
+              <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-orange-600 to-orange-700 bg-clip-text text-transparent">
                 {mockStats.totalSpent}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Spent</div>
+              <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Spent</div>
             </Card>
-            <Card className="text-center bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 border-pink-200 dark:border-pink-800">
-              <div className="text-2xl font-bold text-pink-600 dark:text-pink-400">
+            <Card hover className="text-center p-6 border-2 border-pink-200 dark:border-pink-800">
+              <div className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-br from-pink-600 to-pink-700 bg-clip-text text-transparent">
                 {mockStats.winRate}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Win Rate</div>
+              <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Win Rate</div>
             </Card>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-6 border-b dark:border-gray-800">
+          <div className="flex gap-2 mb-8 overflow-x-auto pb-3 scrollbar-hide">
             <button
               onClick={() => setActiveTab('created')}
-              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'created'
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
               }`}
             >
               Created ({mockUserRaffles.created.length})
             </button>
             <button
               onClick={() => setActiveTab('entered')}
-              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'entered'
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
               }`}
             >
               Entered ({mockUserRaffles.entered.length})
             </button>
             <button
               onClick={() => setActiveTab('won')}
-              className={`px-4 py-2 font-semibold transition-all duration-200 border-b-2 ${
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'won'
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
               }`}
             >
               Won ({mockUserRaffles.won.length})
@@ -162,21 +164,21 @@ export default function ProfilePage({ params }: { params: { address: string } })
 
           {/* Created Raffles Tab */}
           {activeTab === 'created' && (
-            <div className="space-y-4">
-              {mockUserRaffles.created.map((raffle) => (
-                <Card key={raffle.id} hover>
+            <div className="space-y-4 animate-fade-in">
+              {mockUserRaffles.created.map((raffle, index) => (
+                <Card key={raffle.id} hover className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4 flex-1">
-                      <span className="text-3xl">
+                    <div className="flex items-center gap-5 flex-1">
+                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-3xl shadow-lg">
                         {raffle.assetType === AssetType.ETH && '💎'}
                         {raffle.assetType === AssetType.ERC20 && '🪙'}
                         {raffle.assetType === AssetType.ERC721 && '🖼️'}
-                      </span>
+                      </div>
                       <div className="flex-1">
-                        <div className="font-semibold text-lg">{raffle.prizeAmount}</div>
+                        <div className="font-bold text-lg text-gray-900 dark:text-white mb-1">{raffle.prizeAmount}</div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">
                           {raffle.entries}/{raffle.maxEntries} entries •{' '}
-                          <span className={raffle.status === RaffleStatus.Active ? 'text-green-600' : 'text-gray-600'}>
+                          <span className={`font-semibold ${raffle.status === RaffleStatus.Active ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                             {raffle.status === RaffleStatus.Active ? 'Active' : 'Ended'}
                           </span>
                         </div>
@@ -184,24 +186,22 @@ export default function ProfilePage({ params }: { params: { address: string } })
                     </div>
                     <div className="flex gap-2">
                       <Link href={`/raffle/${raffle.id}`}>
-                        <Button variant="outline" size="sm">
-                          View
-                        </Button>
+                        <Button variant="outline" size="sm">View</Button>
                       </Link>
                       {raffle.status === RaffleStatus.Active && (
-                        <Button size="sm">End Raffle</Button>
+                        <Button size="sm" variant="gradient">End Raffle</Button>
                       )}
                     </div>
                   </div>
                 </Card>
               ))}
               {mockUserRaffles.created.length === 0 && (
-                <Card className="text-center py-12">
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    No raffles created yet
-                  </p>
+                <Card className="text-center py-16 animate-fade-in">
+                  <div className="text-6xl mb-4">🎟️</div>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">No raffles created yet</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">Start creating raffles to get started!</p>
                   <Link href="/create">
-                    <Button>Create Your First Raffle</Button>
+                    <Button variant="gradient" size="lg">Create Your First Raffle</Button>
                   </Link>
                 </Card>
               )}
@@ -210,43 +210,41 @@ export default function ProfilePage({ params }: { params: { address: string } })
 
           {/* Entered Raffles Tab */}
           {activeTab === 'entered' && (
-            <div className="space-y-4">
-              {mockUserRaffles.entered.map((raffle) => (
-                <Card key={raffle.id} hover>
+            <div className="space-y-4 animate-fade-in">
+              {mockUserRaffles.entered.map((raffle, index) => (
+                <Card key={raffle.id} hover className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4 flex-1">
-                      <span className="text-3xl">
+                    <div className="flex items-center gap-5 flex-1">
+                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-3xl shadow-lg">
                         {raffle.assetType === AssetType.ETH && '💎'}
                         {raffle.assetType === AssetType.ERC20 && '🪙'}
                         {raffle.assetType === AssetType.ERC721 && '🖼️'}
-                      </span>
+                      </div>
                       <div className="flex-1">
-                        <div className="font-semibold text-lg">{raffle.prizeAmount}</div>
+                        <div className="font-bold text-lg text-gray-900 dark:text-white mb-1">{raffle.prizeAmount}</div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">
-                          Your entries: {raffle.myEntries} • Total: {raffle.totalEntries}
+                          Your entries: <span className="font-semibold text-blue-600 dark:text-blue-400">{raffle.myEntries}</span> • Total: {raffle.totalEntries}
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <span className="text-sm font-semibold text-blue-600">
+                    <div className="flex flex-col items-end gap-3">
+                      <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                         {((raffle.myEntries / raffle.totalEntries) * 100).toFixed(1)}% chance
                       </span>
                       <Link href={`/raffle/${raffle.id}`}>
-                        <Button variant="outline" size="sm">
-                          View Raffle
-                        </Button>
+                        <Button variant="outline" size="sm">View Raffle</Button>
                       </Link>
                     </div>
                   </div>
                 </Card>
               ))}
               {mockUserRaffles.entered.length === 0 && (
-                <Card className="text-center py-12">
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    You haven't entered any raffles yet
-                  </p>
+                <Card className="text-center py-16 animate-fade-in">
+                  <div className="text-6xl mb-4">🎯</div>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">You haven't entered any raffles yet</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">Start entering raffles for a chance to win!</p>
                   <Link href="/">
-                    <Button>Browse Raffles</Button>
+                    <Button variant="gradient" size="lg">Browse Raffles</Button>
                   </Link>
                 </Card>
               )}
@@ -255,45 +253,48 @@ export default function ProfilePage({ params }: { params: { address: string } })
 
           {/* Won Raffles Tab */}
           {activeTab === 'won' && (
-            <div className="space-y-4">
-              {mockUserRaffles.won.map((raffle) => (
-                <Card key={raffle.id} hover className="border-2 border-green-500">
+            <div className="space-y-4 animate-fade-in">
+              {mockUserRaffles.won.map((raffle, index) => (
+                <Card key={raffle.id} hover className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4 flex-1">
-                      <span className="text-3xl">🏆</span>
+                    <div className="flex items-center gap-5 flex-1">
+                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-3xl shadow-lg">
+                        🏆
+                      </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="font-semibold text-lg">{raffle.prizeAmount}</div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="font-bold text-lg text-gray-900 dark:text-white">{raffle.prizeAmount}</div>
                           {!raffle.claimed && (
-                            <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold rounded">
+                            <span className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded-full shadow-md">
                               UNCLAIMED
                             </span>
                           )}
                         </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Won {raffle.wonAt.toLocaleDateString()}
                         </div>
                       </div>
                     </div>
                     {!raffle.claimed ? (
-                      <Button size="lg" variant="secondary">
+                      <Button size="lg" variant="gradient" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
                         Claim Prize
                       </Button>
                     ) : (
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        ✓ Claimed
+                      <span className="text-sm font-semibold text-green-600 dark:text-green-400 flex items-center gap-2">
+                        <span>✓</span>
+                        <span>Claimed</span>
                       </span>
                     )}
                   </div>
                 </Card>
               ))}
               {mockUserRaffles.won.length === 0 && (
-                <Card className="text-center py-12">
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    No wins yet - keep trying!
-                  </p>
+                <Card className="text-center py-16 animate-fade-in">
+                  <div className="text-6xl mb-4">🎲</div>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">No wins yet - keep trying!</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">Enter more raffles to increase your chances!</p>
                   <Link href="/">
-                    <Button>Enter Raffles</Button>
+                    <Button variant="gradient" size="lg">Enter Raffles</Button>
                   </Link>
                 </Card>
               )}

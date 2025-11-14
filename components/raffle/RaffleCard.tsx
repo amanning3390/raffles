@@ -70,55 +70,65 @@ export function RaffleCard({
   const progressPercentage = (entries / maxEntries) * 100;
 
   return (
-    <Card hover className="p-0 overflow-hidden">
+    <Card hover className="p-0 overflow-hidden group">
       {/* Prize Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-4xl">{getAssetIcon()}</span>
-          <span className="text-xs bg-white/20 px-2 py-1 rounded">#{id}</span>
+      <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-6 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl shadow-lg">
+              {getAssetIcon()}
+            </div>
+            <span className="text-xs font-semibold bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/30">
+              #{id}
+            </span>
+          </div>
+          <div className="text-3xl font-bold mb-1 drop-shadow-lg">{prizeAmount}</div>
+          <div className="text-sm font-medium opacity-90">{getAssetLabel()} Prize</div>
         </div>
-        <div className="text-2xl font-bold">{prizeAmount}</div>
-        <div className="text-sm opacity-90">{getAssetLabel()} Prize</div>
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-5">
         {/* Entry Stats */}
         <div>
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-600 dark:text-gray-400">Entries</span>
-            <span className="font-semibold">
+          <div className="flex justify-between text-sm mb-3">
+            <span className="text-gray-600 dark:text-gray-400 font-medium">Entries</span>
+            <span className="font-bold text-gray-900 dark:text-gray-100">
               {entries}/{maxEntries}
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2">
+          <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all"
-              style={{ width: `${progressPercentage}%` }}
+              className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 h-2.5 rounded-full transition-all duration-500 shadow-sm"
+              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
             ></div>
           </div>
         </div>
 
         {/* Entry Fee & Time */}
-        <div className="flex items-center justify-between text-sm">
+        <div className="grid grid-cols-2 gap-4 p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
           <div>
-            <div className="text-gray-600 dark:text-gray-400">Entry Fee</div>
-            <div className="font-semibold">{entryFee} ETH</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Entry Fee</div>
+            <div className="font-bold text-gray-900 dark:text-gray-100">{entryFee} ETH</div>
           </div>
           <div className="text-right">
-            <div className="text-gray-600 dark:text-gray-400">Ends In</div>
-            <div className="font-semibold text-orange-600">{timeRemaining()}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Ends In</div>
+            <div className="font-bold text-orange-600 dark:text-orange-400">{timeRemaining()}</div>
           </div>
         </div>
 
         {/* Creator */}
-        <div className="text-xs text-gray-500 border-t dark:border-gray-800 pt-3">
-          Created by {creator.slice(0, 6)}...{creator.slice(-4)}
+        <div className="text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-4">
+          <span className="font-medium">Created by</span>{' '}
+          <span className="font-mono">{creator.slice(0, 6)}...{creator.slice(-4)}</span>
         </div>
 
         {/* Action Button */}
-        <Link href={`/raffle/${id}`}>
-          <Button className="w-full">Enter Raffle</Button>
+        <Link href={`/raffle/${id}`} className="block">
+          <Button className="w-full" variant="gradient" size="lg">
+            Enter Raffle
+          </Button>
         </Link>
       </div>
     </Card>
