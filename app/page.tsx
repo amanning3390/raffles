@@ -2,7 +2,6 @@
 
 import { Navbar } from '@/components/Navbar';
 import { RaffleCard } from '@/components/raffle/RaffleCard';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AssetType } from '@/lib/contract';
 import { useState } from 'react';
@@ -71,118 +70,184 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 px-4 pb-12 animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Active Raffles</h1>
+      <main className="min-h-screen bg-white dark:bg-gray-950">
+        {/* Hero Section */}
+        <section className="pt-32 pb-24 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center max-w-4xl mx-auto mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-full mb-6 text-sm font-medium text-blue-700 dark:text-blue-300">
+                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                Non-Custodial · No KYC
+              </div>
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 dark:text-white">
+                Raffle Anything
+                <span className="block text-blue-600 dark:text-blue-400">on Base</span>
+              </h1>
+
+              <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+                Create and enter raffles for ETH, tokens, and NFTs. 100% decentralized with zero platform custody.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/create">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Create Raffle
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  onClick={() => {
+                    document.getElementById('raffles-section')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Browse Raffles
+                </Button>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                  {mockRaffles.length}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Active</div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                  {mockRaffles.reduce((acc, r) => acc + r.entries, 0)}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Entries</div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                  2.1 ETH
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Volume</div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                  24h
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Avg Time</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Raffles Section */}
+        <section id="raffles-section" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
+          <div className="max-w-7xl mx-auto">
+            {/* Section Header */}
+            <div className="mb-10">
+              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Active Raffles</h2>
               <p className="text-gray-600 dark:text-gray-400">
-                Enter raffles and win amazing prizes on Base
+                Browse and enter live raffles on Base
               </p>
             </div>
-            <Link href="/create">
-              <Button size="lg">Create Raffle</Button>
-            </Link>
-          </div>
 
-          {/* Stats Banner */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{mockRaffles.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Active Raffles</div>
-            </Card>
-            <Card className="text-center bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200 dark:border-purple-800">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {mockRaffles.reduce((acc, r) => acc + r.entries, 0)}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Entries</div>
-            </Card>
-            <Card className="text-center bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">2.1 ETH</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Value</div>
-            </Card>
-            <Card className="text-center bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-orange-200 dark:border-orange-800">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">24h</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Avg Duration</div>
-            </Card>
-          </div>
-
-          {/* Filters */}
-          <div className="flex gap-3 mb-8 overflow-x-auto pb-2">
-            <Button
-              variant={filter === 'all' ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setFilter('all')}
-            >
-              All Raffles
-            </Button>
-            <Button
-              variant={filter === AssetType.ETH ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setFilter(AssetType.ETH)}
-            >
-              💎 ETH
-            </Button>
-            <Button
-              variant={filter === AssetType.ERC20 ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setFilter(AssetType.ERC20)}
-            >
-              🪙 Tokens
-            </Button>
-            <Button
-              variant={filter === AssetType.ERC721 ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setFilter(AssetType.ERC721)}
-            >
-              🖼️ NFTs
-            </Button>
-          </div>
-
-          {/* Raffles Grid */}
-          {filteredRaffles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRaffles.map((raffle) => (
-                <RaffleCard key={raffle.id} {...raffle} />
-              ))}
+            {/* Filters */}
+            <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+              <button
+                className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                  filter === 'all'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                }`}
+                onClick={() => setFilter('all')}
+              >
+                All Raffles
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                  filter === AssetType.ETH
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                }`}
+                onClick={() => setFilter(AssetType.ETH)}
+              >
+                ETH
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                  filter === AssetType.ERC20
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                }`}
+                onClick={() => setFilter(AssetType.ERC20)}
+              >
+                Tokens
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                  filter === AssetType.ERC721
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                }`}
+                onClick={() => setFilter(AssetType.ERC721)}
+              >
+                NFTs
+              </button>
             </div>
-          ) : (
-            <Card className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">No raffles found</p>
-              <Link href="/create">
-                <Button>Create the First Raffle</Button>
-              </Link>
-            </Card>
-          )}
 
-          {/* Info Banner */}
-          <Card className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-blue-200 dark:border-purple-800">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Raffles Grid */}
+            {filteredRaffles.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredRaffles.map((raffle) => (
+                  <RaffleCard key={raffle.id} {...raffle} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div className="text-5xl mb-4">🎟️</div>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">No raffles found</p>
+                <Link href="/create">
+                  <Button>Create Raffle</Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-20 px-4 bg-white dark:bg-gray-950">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="text-3xl mb-2">🔒</div>
-                <h3 className="font-semibold mb-1">Non-Custodial</h3>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+                  🔒
+                </div>
+                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Non-Custodial</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  All funds secured in smart contracts
+                  All funds secured in smart contracts with zero platform custody
                 </p>
               </div>
+
               <div className="text-center">
-                <div className="text-3xl mb-2">🎭</div>
-                <h3 className="font-semibold mb-1">No KYC</h3>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+                  🎲
+                </div>
+                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Provably Fair</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Wallet-only, fully pseudonymous
+                  Transparent winner selection verifiable on-chain
                 </p>
               </div>
+
               <div className="text-center">
-                <div className="text-3xl mb-2">⚡</div>
-                <h3 className="font-semibold mb-1">Base Network</h3>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center text-2xl mx-auto mb-4">
+                  ⚡
+                </div>
+                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Low Fees</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Fast & cheap transactions
+                  Only 0.5% platform fee on Base network
                 </p>
               </div>
             </div>
-          </Card>
-        </div>
+          </div>
+        </section>
       </main>
     </>
   );
