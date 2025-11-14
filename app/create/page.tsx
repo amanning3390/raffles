@@ -430,7 +430,7 @@ export default function CreateRafflePage() {
                       setStep(2);
                     }
                   }} 
-                  variant="gradient"
+                  variant="default"
                   size="lg"
                   className="flex-1"
                 >
@@ -507,7 +507,7 @@ export default function CreateRafflePage() {
                 <Button onClick={() => setStep(1)} variant="outline" size="lg" className="flex-1">
                   ← Back
                 </Button>
-                <Button onClick={() => setStep(3)} variant="gradient" size="lg" className="flex-1">
+                <Button onClick={() => setStep(3)} variant="default" size="lg" className="flex-1">
                   Continue →
                 </Button>
               </div>
@@ -599,7 +599,7 @@ export default function CreateRafflePage() {
                 </Button>
                 <Button 
                   onClick={handleCreateRaffle} 
-                  variant="gradient"
+                  variant="default"
                   size="lg"
                   className="flex-1"
                   disabled={isPending}

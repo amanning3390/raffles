@@ -99,7 +99,7 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
                 <Link href="/create">
-                  <Button size="lg" variant="gradient" className="w-full sm:w-auto">
+                  <Button size="lg" variant="default" className="w-full sm:w-auto">
                     Create Raffle
                   </Button>
                 </Link>
@@ -232,7 +232,7 @@ export default function HomePage() {
                   Be the first to create a raffle and start the fun!
                 </p>
                 <Link href="/create">
-                  <Button variant="gradient" size="lg">Create Raffle</Button>
+                  <Button variant="default" size="lg">Create Raffle</Button>
                 </Link>
               </Card>
             )}

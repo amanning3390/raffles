@@ -210,7 +210,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
               <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">Invalid raffle ID</p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">The raffle ID you're looking for doesn't exist.</p>
               <Link href="/">
-                <Button variant="gradient" size="lg">Back to Raffles</Button>
+                <Button variant="default" size="lg">Back to Raffles</Button>
               </Link>
             </Card>
           </div>
@@ -230,7 +230,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
               <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">Raffle not found</p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">This raffle may have been removed or doesn't exist.</p>
               <Link href="/">
-                <Button variant="gradient" size="lg">Back to Raffles</Button>
+                <Button variant="default" size="lg">Back to Raffles</Button>
               </Link>
             </Card>
           </div>
@@ -461,7 +461,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                         <Button
                           onClick={handleClaimPrize}
                           isLoading={isClaiming}
-                          variant="gradient"
+                          variant="default"
                           className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
                           size="lg"
                         >
@@ -499,7 +499,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                         <Button
                           onClick={handleEnter}
                           isLoading={isEntering}
-                          variant="gradient"
+                          variant="default"
                           className="w-full"
                           size="lg"
                           disabled={isEntering}

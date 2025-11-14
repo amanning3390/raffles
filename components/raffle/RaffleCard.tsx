@@ -126,7 +126,7 @@ export function RaffleCard({
 
         {/* Action Button */}
         <Link href={`/raffle/${id}`} className="block">
-          <Button className="w-full" variant="gradient" size="lg">
+          <Button className="w-full" variant="default" size="lg">
             Enter Raffle
           </Button>
         </Link>

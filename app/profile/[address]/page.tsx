@@ -88,7 +88,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
               </div>
               {isOwnProfile && (
                 <Link href="/create">
-                  <Button variant="gradient" size="lg">Create Raffle</Button>
+                  <Button variant="default" size="lg">Create Raffle</Button>
                 </Link>
               )}
             </div>
@@ -189,7 +189,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
                         <Button variant="outline" size="sm">View</Button>
                       </Link>
                       {raffle.status === RaffleStatus.Active && (
-                        <Button size="sm" variant="gradient">End Raffle</Button>
+                        <Button size="sm" variant="default">End Raffle</Button>
                       )}
                     </div>
                   </div>
@@ -201,7 +201,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
                   <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">No raffles created yet</p>
                   <p className="text-gray-600 dark:text-gray-400 mb-6">Start creating raffles to get started!</p>
                   <Link href="/create">
-                    <Button variant="gradient" size="lg">Create Your First Raffle</Button>
+                    <Button variant="default" size="lg">Create Your First Raffle</Button>
                   </Link>
                 </Card>
               )}
@@ -244,7 +244,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
                   <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">You haven't entered any raffles yet</p>
                   <p className="text-gray-600 dark:text-gray-400 mb-6">Start entering raffles for a chance to win!</p>
                   <Link href="/">
-                    <Button variant="gradient" size="lg">Browse Raffles</Button>
+                    <Button variant="default" size="lg">Browse Raffles</Button>
                   </Link>
                 </Card>
               )}
@@ -276,7 +276,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
                       </div>
                     </div>
                     {!raffle.claimed ? (
-                      <Button size="lg" variant="gradient" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
+                      <Button size="lg" variant="default" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
                         Claim Prize
                       </Button>
                     ) : (
@@ -294,7 +294,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
                   <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">No wins yet - keep trying!</p>
                   <p className="text-gray-600 dark:text-gray-400 mb-6">Enter more raffles to increase your chances!</p>
                   <Link href="/">
-                    <Button variant="gradient" size="lg">Enter Raffles</Button>
+                    <Button variant="default" size="lg">Enter Raffles</Button>
                   </Link>
                 </Card>
               )}

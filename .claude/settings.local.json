@@ -12,7 +12,9 @@
       "Bash(npm run build:*)",
       "Bash(find:*)",
       "Bash(done)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(npm update:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []

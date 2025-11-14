@@ -1,56 +1,45 @@
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default:
-          'bg-primary text-primary-foreground shadow-glow hover:shadow-glow-lg hover:scale-[1.02] active:scale-[0.98]',
-        destructive:
-          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
-        outline:
-          'border-2 border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-primary/50',
-        secondary:
-          'bg-secondary text-secondary-foreground shadow-glow-secondary hover:shadow-glow-secondary hover:scale-[1.02] active:scale-[0.98]',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-        gradient:
-          'bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 text-white shadow-lg hover:shadow-xl transition-all duration-500',
-        glass:
-          'glass dark:glass-dark backdrop-blur-md hover:backdrop-blur-xl hover:scale-[1.02] active:scale-[0.98]',
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-12 rounded-lg px-8 text-base',
-        xl: 'h-14 rounded-xl px-10 text-lg',
-        icon: 'h-10 w-10',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
+const baseButtonClasses = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
+
+const buttonVariants = {
+  variant: {
+    default: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
+    destructive: 'bg-red-600 text-white hover:bg-red-700',
+    outline: 'border-2 border-gray-300 bg-transparent hover:bg-gray-50',
+    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+    ghost: 'hover:bg-gray-100 text-gray-700',
+    link: 'text-blue-600 underline-offset-4 hover:underline'
+  },
+  size: {
+    default: 'h-10 px-4 py-2',
+    sm: 'h-8 rounded-md px-3 text-xs',
+    lg: 'h-12 rounded-lg px-8 text-base',
+    xl: 'h-14 rounded-xl px-10 text-lg',
+    icon: 'h-10 w-10'
   }
-);
+};
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: keyof typeof buttonVariants.variant;
+  size?: keyof typeof buttonVariants.size;
   isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, isLoading, children, disabled, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
+  ({ className, variant = 'default', size = 'default', isLoading, children, disabled, ...props }, ref) => {
+    const classes = cn(
+      baseButtonClasses,
+      buttonVariants.variant[variant],
+      buttonVariants.size[size],
+      className
+    );
+
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+      <button
+        className={classes}
         ref={ref}
         disabled={disabled || isLoading}
         {...props}
@@ -82,11 +71,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           children
         )}
-      </Comp>
+      </button>
     );
   }
 );
 
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };
