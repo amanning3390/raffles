@@ -173,7 +173,7 @@ export default function CreateRafflePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
+      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-10 text-center animate-slide-up">
@@ -194,7 +194,7 @@ export default function CreateRafflePage() {
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg transition-all duration-300 ${
                         step >= s
-                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-110'
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-110'
                           : 'bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                       }`}
                     >
@@ -233,7 +233,7 @@ export default function CreateRafflePage() {
                 <label
                   className={`block p-6 border-2 rounded-2xl cursor-pointer transition-all duration-300 group ${
                     formData.assetType === AssetType.ETH
-                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 shadow-lg shadow-blue-500/20 scale-[1.02]'
+                      ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 shadow-lg shadow-blue-500 shadow-opacity-20 scale-102'
                       : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md'
                   }`}
                 >
@@ -269,7 +269,7 @@ export default function CreateRafflePage() {
                 <label
                   className={`block p-6 border-2 rounded-2xl cursor-pointer transition-all duration-300 group ${
                     formData.assetType === AssetType.ERC20
-                      ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 shadow-lg shadow-purple-500/20 scale-[1.02]'
+                      ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 shadow-lg shadow-purple-500 shadow-opacity-20 scale-102'
                       : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md'
                   }`}
                 >
@@ -305,7 +305,7 @@ export default function CreateRafflePage() {
                 <label
                   className={`block p-6 border-2 rounded-2xl cursor-pointer transition-all duration-300 group ${
                     formData.assetType === AssetType.ERC721
-                      ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 shadow-lg shadow-pink-500/20 scale-[1.02]'
+                      ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 shadow-lg shadow-pink-500 shadow-opacity-20 scale-102'
                       : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md'
                   }`}
                 >
@@ -340,7 +340,7 @@ export default function CreateRafflePage() {
 
               {/* Asset-specific inputs */}
               {formData.assetType === AssetType.ETH && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-blue-50/50 to-purple-50/30 dark:from-blue-950/30 dark:to-purple-950/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-2xl border border-blue-200 dark:border-blue-800 bg-opacity-50 dark:bg-opacity-30">
                   <Input
                     label="Prize Amount (ETH)"
                     name="assetAmount"
@@ -358,7 +358,7 @@ export default function CreateRafflePage() {
               )}
 
               {formData.assetType === AssetType.ERC20 && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-purple-50/50 to-pink-50/30 dark:from-purple-950/30 dark:to-pink-950/20 rounded-2xl border border-purple-200/50 dark:border-purple-800/30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-2xl border border-purple-200 dark:border-purple-800 bg-opacity-50 dark:bg-opacity-30">
                   <Input
                     label="Token Contract Address"
                     name="assetContract"
@@ -382,7 +382,7 @@ export default function CreateRafflePage() {
               )}
 
               {formData.assetType === AssetType.ERC721 && (
-                <div className="space-y-4 p-6 bg-gradient-to-br from-pink-50/50 to-orange-50/30 dark:from-pink-950/30 dark:to-orange-950/20 rounded-2xl border border-pink-200/50 dark:border-pink-800/30">
+                <div className="space-y-4 p-6 bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-950 dark:to-orange-950 rounded-2xl border border-pink-200 dark:border-pink-800 bg-opacity-50 dark:bg-opacity-30">
                   <Input
                     label="NFT Contract Address"
                     name="assetContract"

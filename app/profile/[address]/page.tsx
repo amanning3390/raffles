@@ -68,13 +68,13 @@ export default function ProfilePage({ params }: { params: { address: string } })
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
+      <main className="min-h-screen pt-28 px-4 pb-16 animate-fade-in bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
         <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
           <Card className="mb-8 animate-slide-up">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex items-center gap-5">
-                <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shadow-lg shadow-blue-500/30">
+                <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shadow-lg shadow-blue-500 shadow-opacity-30">
                   👤
                 </div>
                 <div>
@@ -134,8 +134,8 @@ export default function ProfilePage({ params }: { params: { address: string } })
               onClick={() => setActiveTab('created')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'created'
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
               }`}
             >
               Created ({mockUserRaffles.created.length})
@@ -144,8 +144,8 @@ export default function ProfilePage({ params }: { params: { address: string } })
               onClick={() => setActiveTab('entered')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'entered'
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
               }`}
             >
               Entered ({mockUserRaffles.entered.length})
@@ -154,8 +154,8 @@ export default function ProfilePage({ params }: { params: { address: string } })
               onClick={() => setActiveTab('won')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                 activeTab === 'won'
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                  : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
               }`}
             >
               Won ({mockUserRaffles.won.length})
@@ -255,7 +255,7 @@ export default function ProfilePage({ params }: { params: { address: string } })
           {activeTab === 'won' && (
             <div className="space-y-4 animate-fade-in">
               {mockUserRaffles.won.map((raffle, index) => (
-                <Card key={raffle.id} className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={raffle.id} className="border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 bg-opacity-50 dark:bg-opacity-30 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-center gap-5 flex-1">
                       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-3xl shadow-lg">

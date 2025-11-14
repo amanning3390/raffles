@@ -14,7 +14,9 @@
       "Bash(done)",
       "Bash(tee:*)",
       "Bash(npm update:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

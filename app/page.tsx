@@ -71,17 +71,17 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 bg-opacity-30 dark:bg-opacity-20">
         {/* Hero Section */}
         <section className="relative pt-32 pb-28 px-4 overflow-hidden">
           {/* Animated background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 dark:from-blue-500/10 dark:via-transparent dark:to-purple-500/10 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-transparent to-purple-500 dark:from-blue-500 dark:via-transparent dark:to-purple-500 bg-opacity-5 dark:bg-opacity-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 bg-opacity-10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400 bg-opacity-10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-24 animate-fade-in">
-              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 glass-effect shadow-lg shadow-blue-500/10 dark:shadow-blue-500/5 rounded-full mb-8 text-sm font-semibold text-blue-700 dark:text-blue-300 animate-slide-up">
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 glass-effect shadow-lg shadow-blue-500 dark:shadow-blue-500 shadow-opacity-10 dark:shadow-opacity-5 rounded-full mb-8 text-sm font-semibold text-blue-700 dark:text-blue-300 animate-slide-up">
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
                 Non-Custodial · No KYC · 100% On-Chain
               </div>
@@ -167,8 +167,8 @@ export default function HomePage() {
                 aria-label="Show all raffles"
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === 'all'
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
                 }`}
                 onClick={() => setFilter('all')}
               >
@@ -180,8 +180,8 @@ export default function HomePage() {
                 aria-label="Show ETH raffles only"
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ETH
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ETH)}
               >
@@ -193,8 +193,8 @@ export default function HomePage() {
                 aria-label="Show token raffles only"
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ERC20
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ERC20)}
               >
@@ -206,8 +206,8 @@ export default function HomePage() {
                 aria-label="Show NFT raffles only"
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                   filter === AssetType.ERC721
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105'
-                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:scale-105'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500 shadow-opacity-30 scale-105'
+                    : 'glass-effect text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:bg-opacity-50 hover:scale-105'
                 }`}
                 onClick={() => setFilter(AssetType.ERC721)}
               >
@@ -253,7 +253,7 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               <Card className="text-center p-8 md:p-10 animate-slide-up">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-blue-500 shadow-opacity-30 group-hover:scale-110 transition-transform duration-300">
                   🔒
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Non-Custodial</h3>
@@ -263,7 +263,7 @@ export default function HomePage() {
               </Card>
 
               <Card className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-purple-500 shadow-opacity-30 group-hover:scale-110 transition-transform duration-300">
                   🎲
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Provably Fair</h3>
@@ -273,7 +273,7 @@ export default function HomePage() {
               </Card>
 
               <Card className="text-center p-8 md:p-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl md:text-4xl mx-auto mb-6 shadow-lg shadow-green-500 shadow-opacity-30 group-hover:scale-110 transition-transform duration-300">
                   ⚡
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Low Fees</h3>
