@@ -14,10 +14,6 @@
   }
 }
 
-* {
-  @apply border-border;
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
