@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude doctor)",
+      "Bash(dir:*)",
+      "Bash(cat:*)",
+      "Bash(claude --version)",
+      "Bash(tree:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
