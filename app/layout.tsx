@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from '@/components/Providers';
+import { validateEnv } from '@/lib/env';
+
+// Validate environment variables at build time
+validateEnv();
 
 export async function generateMetadata(): Promise<Metadata> {
   const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app';

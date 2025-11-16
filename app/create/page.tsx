@@ -1,24 +1,40 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAccount } from 'wagmi';
 import { parseEther, Address, isAddress } from 'viem';
-import { AssetType } from '@/lib/contract';
-import { useCreateRaffle } from '@/hooks/useRaffleContract';
+import { AssetType, RAFFLE_CORE_ADDRESS, RAFFLE_CORE_ABI } from '@/lib/contract';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/toast';
+import dynamic from 'next/dynamic';
+import type { TransactionResponseType } from '@coinbase/onchainkit/transaction';
+import type { ContractCallWithValue } from '@/components/transaction/TransactionWrapper';
+
+// Lazy load TransactionWrapper for better performance
+const TransactionWrapper = dynamic(
+  () => import('@/components/transaction/TransactionWrapper').then(mod => ({ default: mod.TransactionWrapper })),
+  { 
+    ssr: false,
+    loading: () => (
+      <Button variant="default" size="lg" className="flex-1" disabled>
+        Loading...
+      </Button>
+    )
+  }
+);
 
 export default function CreateRafflePage() {
   const { isConnected, address } = useAccount();
   const router = useRouter();
   const { showToast } = useToast();
-  const { createRaffle, isPending, isSuccess, error, hash } = useCreateRaffle();
   const [step, setStep] = useState(1);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [isCreating, setIsCreating] = useState(false);
+  const [transactionContracts, setTransactionContracts] = useState<ContractCallWithValue[] | null>(null);
   const [formData, setFormData] = useState({
     assetType: AssetType.ETH,
     assetContract: '',
@@ -97,7 +113,7 @@ export default function CreateRafflePage() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleCreateRaffle = async () => {
+  const handleCreateRaffle = () => {
     if (!validateForm()) {
       showToast('Please fix form errors', 'error');
       return;
@@ -118,7 +134,8 @@ export default function CreateRafflePage() {
       const startTime = BigInt(Math.floor(Date.now() / 1000));
       const endTime = startTime + duration * BigInt(3600);
 
-      await createRaffle({
+      const config = {
+        creator: address,
         assetType: formData.assetType,
         assetContract: (formData.assetContract || '0x0000000000000000000000000000000000000000') as Address,
         assetTokenId: BigInt(formData.assetTokenId || '0'),
@@ -126,30 +143,43 @@ export default function CreateRafflePage() {
         entryFee,
         maxEntries: BigInt(formData.maxEntries),
         maxEntriesPerWallet: BigInt(formData.maxEntriesPerWallet),
-        duration,
+        startTime,
+        endTime,
         winnerCount: BigInt(formData.winnerCount),
-      });
+        status: 0, // Active
+      };
+
+      // Prepare transaction contracts for OnchainKit Transaction component
+      const contracts: ContractCallWithValue[] = [
+        {
+          address: RAFFLE_CORE_ADDRESS,
+          abi: RAFFLE_CORE_ABI,
+          functionName: 'createRaffle',
+          args: [config],
+          value: formData.assetType === AssetType.ETH ? assetAmount : BigInt(0),
+        },
+      ];
+
+      setTransactionContracts(contracts);
+      setIsCreating(true);
     } catch (err: any) {
-      showToast(err.message || 'Failed to create raffle', 'error');
+      showToast(err.message || 'Failed to prepare transaction', 'error');
     }
   };
 
-  useEffect(() => {
-    if (isSuccess && hash) {
-      showToast('Raffle created successfully!', 'success');
-      // Redirect to raffle detail page after a short delay
-      // Note: We'd need the raffle ID from events, but for now redirect to home
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
-    }
-  }, [isSuccess, hash, router, showToast]);
+  const handleTransactionSuccess = (response: TransactionResponseType) => {
+    setIsCreating(false);
+    setTransactionContracts(null);
+    // Redirect to home page after successful creation
+    setTimeout(() => {
+      router.push('/');
+    }, 2000);
+  };
 
-  useEffect(() => {
-    if (error) {
-      showToast(error.message || 'Transaction failed', 'error');
-    }
-  }, [error, showToast]);
+  const handleTransactionError = () => {
+    setIsCreating(false);
+    setTransactionContracts(null);
+  };
 
   if (!isConnected) {
     return (
@@ -597,16 +627,28 @@ export default function CreateRafflePage() {
                 <Button onClick={() => setStep(2)} variant="outline" size="lg" className="flex-1">
                   ← Back
                 </Button>
-                <Button 
-                  onClick={handleCreateRaffle} 
-                  variant="default"
-                  size="lg"
-                  className="flex-1"
-                  disabled={isPending}
-                  isLoading={isPending}
-                >
-                  {isPending ? 'Creating...' : '✨ Create Raffle'}
-                </Button>
+                {transactionContracts ? (
+                  <div className="flex-1">
+                    <TransactionWrapper
+                      contracts={transactionContracts}
+                      onSuccess={handleTransactionSuccess}
+                      onError={handleTransactionError}
+                      buttonText="✨ Create Raffle"
+                      buttonClassName="w-full h-12 text-base font-semibold"
+                    />
+                  </div>
+                ) : (
+                  <Button 
+                    onClick={handleCreateRaffle} 
+                    variant="default"
+                    size="lg"
+                    className="flex-1"
+                    disabled={isCreating}
+                    isLoading={isCreating}
+                  >
+                    {isCreating ? 'Preparing...' : '✨ Create Raffle'}
+                  </Button>
+                )}
               </div>
             </Card>
           )}

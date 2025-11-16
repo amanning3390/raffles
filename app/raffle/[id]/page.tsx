@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AssetType, RaffleStatus } from '@/lib/contract';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useAccount } from 'wagmi';
 import { formatEther, parseEther } from 'viem';
 import Link from 'next/link';
@@ -14,12 +14,30 @@ import {
   useRaffleEntries, 
   useRaffleParticipants,
   useRaffleWinners,
-  useEnterRaffle,
   useClaimPrize
 } from '@/hooks/useRaffleContract';
 import { useToast } from '@/components/ui/toast';
 import { useReadContract } from 'wagmi';
 import { RAFFLE_CORE_ADDRESS, RAFFLE_CORE_ABI } from '@/lib/contract';
+import dynamic from 'next/dynamic';
+import { Identity, Avatar, Name, Address } from '@coinbase/onchainkit/identity';
+import { UserIdentity } from '@/components/identity/UserIdentity';
+import type { TransactionResponseType } from '@coinbase/onchainkit/transaction';
+import type { Address as AddressType } from 'viem';
+import type { ContractCallWithValue } from '@/components/transaction/TransactionWrapper';
+
+// Lazy load TransactionWrapper for better performance
+const TransactionWrapper = dynamic(
+  () => import('@/components/transaction/TransactionWrapper').then(mod => ({ default: mod.TransactionWrapper })),
+  { 
+    ssr: false,
+    loading: () => (
+      <Button variant="default" size="lg" className="w-full" disabled>
+        Loading...
+      </Button>
+    )
+  }
+);
 
 export default function RaffleDetailPage({ params }: { params: { id: string } }) {
   const { address, isConnected } = useAccount();
@@ -43,8 +61,10 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
   const { entries: totalEntries, isLoading: isLoadingEntries, refetch: refetchEntries } = useRaffleEntries(raffleId);
   const { participants, isLoading: isLoadingParticipants } = useRaffleParticipants(raffleId);
   const { winners, isLoading: isLoadingWinners } = useRaffleWinners(raffleId);
-  const { enterRaffle, isPending: isEntering, isSuccess: enterSuccess, error: enterError } = useEnterRaffle();
   const { claimPrize, isPending: isClaiming, isSuccess: claimSuccess } = useClaimPrize();
+  
+  const [isEntering, setIsEntering] = useState(false);
+  const [entryTransactionContracts, setEntryTransactionContracts] = useState<ContractCallWithValue[] | null>(null);
   
   // Check if user is a winner
   const isWinner = useMemo(() => {
@@ -102,7 +122,7 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
     }
   }, [raffle, entryCount]);
 
-  const handleEnter = async () => {
+  const handleEnter = () => {
     if (!raffle || !address) {
       showToast('Please connect your wallet', 'error');
       return;
@@ -144,32 +164,38 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
     }
 
     try {
-      await enterRaffle(raffleId, BigInt(entryCountNum), raffle.entryFee);
+      const entries = BigInt(entryCountNum);
+      const totalCost = raffle.entryFee * entries;
+
+      // Prepare transaction contracts for OnchainKit Transaction component
+      const contracts: ContractCallWithValue[] = [
+        {
+          address: RAFFLE_CORE_ADDRESS,
+          abi: RAFFLE_CORE_ABI,
+          functionName: 'enterRaffle',
+          args: [raffleId, entries],
+          value: totalCost,
+        },
+      ];
+
+      setEntryTransactionContracts(contracts);
+      setIsEntering(true);
     } catch (err: any) {
-      showToast(err.message || 'Failed to enter raffle', 'error');
+      showToast(err.message || 'Failed to prepare transaction', 'error');
     }
   };
 
-  useEffect(() => {
-    if (enterSuccess) {
-      showToast('Successfully entered raffle!', 'success');
-      refetchRaffle();
-      refetchEntries();
-    }
-  }, [enterSuccess, refetchRaffle, refetchEntries, showToast]);
+  const handleEntrySuccess = (response: TransactionResponseType) => {
+    setIsEntering(false);
+    setEntryTransactionContracts(null);
+    refetchRaffle();
+    refetchEntries();
+  };
 
-  useEffect(() => {
-    if (enterError) {
-      showToast(enterError.message || 'Transaction failed', 'error');
-    }
-  }, [enterError, showToast]);
-
-  useEffect(() => {
-    if (claimSuccess) {
-      showToast('Prize claimed successfully!', 'success');
-      refetchRaffle();
-    }
-  }, [claimSuccess, refetchRaffle, showToast]);
+  const handleEntryError = () => {
+    setIsEntering(false);
+    setEntryTransactionContracts(null);
+  };
 
   const handleClaimPrize = async () => {
     if (!address) {
@@ -301,10 +327,8 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
 
                   <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
                     <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl">
-                      <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Creator</div>
-                      <div className="font-mono text-sm font-bold text-gray-900 dark:text-white">
-                        {raffle.creator.slice(0, 6)}...{raffle.creator.slice(-4)}
-                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-2">Creator</div>
+                      <UserIdentity address={raffle.creator as AddressType} className="flex items-center gap-2" />
                     </div>
                     <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl">
                       <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Winners</div>
@@ -337,15 +361,11 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                 ) : participants && participants.length > 0 ? (
                   <div className="space-y-2">
                     {participants.slice(-10).map((participant, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">
-                            {index + 1}
-                          </div>
-                          <span className="font-mono text-sm font-semibold text-gray-900 dark:text-white">
-                            {participant.slice(0, 6)}...{participant.slice(-4)}
-                          </span>
+                      <div key={index} className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">
+                          {index + 1}
                         </div>
+                        <UserIdentity address={participant as AddressType} className="flex items-center gap-2" />
                       </div>
                     ))}
                   </div>
@@ -367,19 +387,19 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                   <div className="space-y-3">
                     {winners.map((winner, index) => (
                       <div key={index} className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-200 dark:border-green-800 shadow-md hover:shadow-lg transition-all duration-200">
-                        <div className="flex items-center gap-4">
+                        <Identity address={winner as AddressType} className="flex items-center gap-4">
                           <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
                             {index + 1}
                           </div>
                           <div>
-                            <span className="font-mono text-sm font-bold text-gray-900 dark:text-white block">
-                              {winner.slice(0, 6)}...{winner.slice(-4)}
-                            </span>
+                            <Avatar className="w-10 h-10" />
+                            <Name className="font-mono text-sm font-bold block" />
+                            <Address className="text-xs" />
                             {address && winner.toLowerCase() === address.toLowerCase() && (
                               <span className="text-xs font-semibold text-green-600 dark:text-green-400 mt-1 block">🎉 You won!</span>
                             )}
                           </div>
-                        </div>
+                        </Identity>
                         {address && winner.toLowerCase() === address.toLowerCase() && !hasClaimed && (
                           <Button
                             onClick={handleClaimPrize}
@@ -496,16 +516,26 @@ export default function RaffleDetailPage({ params }: { params: { id: string } })
                           </div>
                         </div>
 
-                        <Button
-                          onClick={handleEnter}
-                          isLoading={isEntering}
-                          variant="default"
-                          className="w-full"
-                          size="lg"
-                          disabled={isEntering}
-                        >
-                          {isEntering ? 'Entering...' : '🎟️ Enter Raffle'}
-                        </Button>
+                        {entryTransactionContracts ? (
+                          <TransactionWrapper
+                            contracts={entryTransactionContracts}
+                            onSuccess={handleEntrySuccess}
+                            onError={handleEntryError}
+                            buttonText="🎟️ Enter Raffle"
+                            buttonClassName="w-full h-12 text-base font-semibold"
+                          />
+                        ) : (
+                          <Button
+                            onClick={handleEnter}
+                            isLoading={isEntering}
+                            variant="default"
+                            className="w-full"
+                            size="lg"
+                            disabled={isEntering}
+                          >
+                            {isEntering ? 'Preparing...' : '🎟️ Enter Raffle'}
+                          </Button>
+                        )}
                       </>
                     )}
 

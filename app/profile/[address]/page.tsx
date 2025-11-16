@@ -7,6 +7,9 @@ import { AssetType, RaffleStatus } from '@/lib/contract';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import Link from 'next/link';
+import { Identity, Avatar, Name, EthBalance } from '@coinbase/onchainkit/identity';
+import { UserIdentity } from '@/components/identity/UserIdentity';
+import type { Address as AddressType } from 'viem';
 
 // Mock user data
 const mockUserRaffles = {
@@ -74,16 +77,19 @@ export default function ProfilePage({ params }: { params: { address: string } })
           <Card className="mb-8 animate-slide-up">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex items-center gap-5">
-                <div className="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shadow-lg shadow-blue-500 shadow-opacity-30">
-                  👤
-                </div>
+                <Identity address={params.address as AddressType} hasCopyAddressOnClick>
+                  <Avatar className="w-24 h-24 md:w-28 md:h-28" />
+                </Identity>
                 <div>
                   <h1 className="text-3xl md:text-4xl font-extrabold mb-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    {isOwnProfile ? 'Your Profile' : 'User Profile'}
+                    {isOwnProfile ? 'Your Profile' : <Name address={params.address as AddressType} />}
                   </h1>
-                  <p className="font-mono text-sm font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-lg inline-block">
-                    {params.address.slice(0, 6)}...{params.address.slice(-4)}
-                  </p>
+                  <UserIdentity 
+                    address={params.address as AddressType} 
+                    showBalance={true}
+                    hasCopyAddressOnClick={true}
+                    className="flex flex-col gap-2"
+                  />
                 </div>
               </div>
               {isOwnProfile && (

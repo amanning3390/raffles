@@ -1,6 +1,9 @@
 /**
  * Contract configuration and ABIs
+ * Centralized contract addresses, ABIs, and types for the Raffle application
  */
+
+import type { Address, Abi } from '@/types/wagmi';
 
 const contractAddress = process.env.NEXT_PUBLIC_RAFFLE_CORE_ADDRESS;
 
@@ -21,9 +24,12 @@ if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
   throw new Error('NEXT_PUBLIC_RAFFLE_CORE_ADDRESS is not a valid Ethereum address');
 }
 
-export const RAFFLE_CORE_ADDRESS = contractAddress as `0x${string}`;
+export const RAFFLE_CORE_ADDRESS: Address = contractAddress as Address;
 
-// Minimal ABI for RaffleCore contract
+/**
+ * Minimal ABI for RaffleCore contract
+ * Includes only the functions and events used by the application
+ */
 export const RAFFLE_CORE_ABI = [
   {
     type: 'function',
@@ -175,24 +181,34 @@ export const RAFFLE_CORE_ABI = [
       { indexed: false, name: 'entries', type: 'uint256' },
     ],
   },
-] as const;
+] as const satisfies Abi;
 
+/**
+ * Asset type enum for raffle prizes
+ */
 export enum AssetType {
   ETH = 0,
   ERC20 = 1,
   ERC721 = 2,
 }
 
+/**
+ * Raffle status enum
+ */
 export enum RaffleStatus {
   Active = 0,
   Ended = 1,
   Cancelled = 2,
 }
 
-export type RaffleConfig = {
-  creator: `0x${string}`;
+/**
+ * Raffle configuration type
+ * Matches the RaffleConfig struct in the smart contract
+ */
+export interface RaffleConfig {
+  creator: Address;
   assetType: AssetType;
-  assetContract: `0x${string}`;
+  assetContract: Address;
   assetTokenId: bigint;
   assetAmount: bigint;
   entryFee: bigint;
@@ -202,4 +218,10 @@ export type RaffleConfig = {
   endTime: bigint;
   winnerCount: bigint;
   status: RaffleStatus;
-};
+}
+
+/**
+ * Raffle data type returned from contract reads
+ * Same as RaffleConfig but used for read operations
+ */
+export type RaffleData = RaffleConfig;

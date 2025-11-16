@@ -4,6 +4,8 @@ import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { AssetType } from '@/lib/contract';
+import { UserIdentity } from '@/components/identity/UserIdentity';
+import type { Address as AddressType } from 'viem';
 
 interface RaffleCardProps {
   id: number;
@@ -119,9 +121,9 @@ export function RaffleCard({
         </div>
 
         {/* Creator */}
-        <div className="text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-4">
-          <span className="font-medium">Created by</span>{' '}
-          <span className="font-mono">{creator.slice(0, 6)}...{creator.slice(-4)}</span>
+        <div className="border-t border-gray-200 dark:border-gray-800 pt-4">
+          <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-2">Created by</div>
+          <UserIdentity address={creator as AddressType} className="flex items-center gap-2" />
         </div>
 
         {/* Action Button */}

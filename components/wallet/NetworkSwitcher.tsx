@@ -2,16 +2,32 @@
 
 import { useAccount, useSwitchChain } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
+import { useToast } from '@/components/ui/toast';
+import { handleErrorWithToast, handleOnchainKitError } from '@/lib/error-handlers';
 
 export function NetworkSwitcher() {
   const { chain } = useAccount();
   const { switchChain } = useSwitchChain();
+  const { showToast } = useToast();
 
   const isTestnet = chain?.id === baseSepolia.id;
 
+  const handleSwitchChain = async () => {
+    try {
+      await switchChain({ chainId: isTestnet ? base.id : baseSepolia.id });
+    } catch (error) {
+      handleErrorWithToast(
+        error,
+        handleOnchainKitError,
+        'NetworkSwitcher',
+        showToast
+      );
+    }
+  };
+
   return (
     <button
-      onClick={() => switchChain({ chainId: isTestnet ? base.id : baseSepolia.id })}
+      onClick={handleSwitchChain}
       className="px-3 py-2 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition"
       title={isTestnet ? 'Switch to Mainnet' : 'Switch to Testnet'}
     >

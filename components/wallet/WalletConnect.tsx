@@ -8,6 +8,7 @@ import {
   WalletDropdownDisconnect,
   WalletDropdownLink,
 } from '@coinbase/onchainkit/wallet';
+import type { WalletProps } from '@/types/onchainkit';
 import {
   Address,
   Avatar,
@@ -16,6 +17,11 @@ import {
   EthBalance,
 } from '@coinbase/onchainkit/identity';
 
+/**
+ * WalletConnect component using OnchainKit Wallet components
+ * Provides wallet connection, dropdown menu, and identity display
+ * Follows OnchainKit best practices for wallet integration
+ */
 export function WalletConnect() {
   return (
     <div className="flex items-center gap-4">

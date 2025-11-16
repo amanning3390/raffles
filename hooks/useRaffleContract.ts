@@ -1,10 +1,19 @@
 'use client';
 
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
-import { parseEther, Address } from 'viem';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract, useReadContracts } from 'wagmi';
+import type {
+  UseWriteContractReturnType,
+  UseWaitForTransactionReceiptReturnType,
+  UseReadContractReturnType,
+  UseReadContractsReturnType,
+} from '@/types/wagmi';
+import type { Address, Hash, TransactionReceipt } from '@/types/wagmi';
 import { RAFFLE_CORE_ADDRESS, RAFFLE_CORE_ABI, AssetType } from '@/lib/contract';
-import { useState } from 'react';
+import type { RaffleConfig, RaffleData } from '@/lib/contract';
 
+/**
+ * Parameters for creating a new raffle
+ */
 export interface CreateRaffleParams {
   assetType: AssetType;
   assetContract: Address;
@@ -17,7 +26,107 @@ export interface CreateRaffleParams {
   winnerCount: bigint;
 }
 
-export function useCreateRaffle() {
+/**
+ * Return type for raffle creation hook
+ */
+export interface UseCreateRaffleReturn {
+  createRaffle: (params: CreateRaffleParams) => Promise<void>;
+  isPending: boolean;
+  isSuccess: boolean;
+  error: Error | null;
+  hash: Hash | undefined;
+}
+
+/**
+ * Return type for raffle entry hook
+ */
+export interface UseEnterRaffleReturn {
+  enterRaffle: (raffleId: bigint, entries: bigint, entryFee: bigint) => Promise<void>;
+  isPending: boolean;
+  isSuccess: boolean;
+  error: Error | null;
+  hash: Hash | undefined;
+}
+
+/**
+ * Return type for raffle data hook
+ */
+export interface UseRaffleDataReturn {
+  raffle: RaffleData | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+/**
+ * Return type for raffle entries hook
+ */
+export interface UseRaffleEntriesReturn {
+  entries: bigint | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+/**
+ * Return type for raffle participants hook
+ */
+export interface UseRaffleParticipantsReturn {
+  participants: Address[] | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+/**
+ * Return type for raffle winners hook
+ */
+export interface UseRaffleWinnersReturn {
+  winners: Address[] | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+/**
+ * Return type for claim prize hook
+ */
+export interface UseClaimPrizeReturn {
+  claimPrize: (raffleId: bigint) => Promise<void>;
+  isPending: boolean;
+  isSuccess: boolean;
+  error: Error | null;
+  hash: Hash | undefined;
+}
+
+/**
+ * Return type for end raffle hook
+ */
+export interface UseEndRaffleReturn {
+  endRaffle: (raffleId: bigint) => Promise<void>;
+  isPending: boolean;
+  isSuccess: boolean;
+  error: Error | null;
+  hash: Hash | undefined;
+}
+
+/**
+ * Return type for total raffles hook
+ */
+export interface UseTotalRafflesReturn {
+  totalRaffles: bigint | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+/**
+ * Hook for creating a new raffle
+ * Handles contract interaction and transaction state
+ * 
+ * @returns Object with createRaffle function and transaction state
+ */
+export function useCreateRaffle(): UseCreateRaffleReturn {
   const { address } = useAccount();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -58,7 +167,13 @@ export function useCreateRaffle() {
   };
 }
 
-export function useEnterRaffle() {
+/**
+ * Hook for entering a raffle
+ * Handles contract interaction and transaction state
+ * 
+ * @returns Object with enterRaffle function and transaction state
+ */
+export function useEnterRaffle(): UseEnterRaffleReturn {
   const { address } = useAccount();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -86,7 +201,13 @@ export function useEnterRaffle() {
   };
 }
 
-export function useRaffleData(raffleId: bigint) {
+/**
+ * Hook for fetching raffle data
+ * 
+ * @param raffleId - The ID of the raffle to fetch
+ * @returns Object with raffle data and loading state
+ */
+export function useRaffleData(raffleId: bigint): UseRaffleDataReturn {
   const { data, isLoading, error, refetch } = useReadContract({
     address: RAFFLE_CORE_ADDRESS,
     abi: RAFFLE_CORE_ABI,
@@ -102,7 +223,13 @@ export function useRaffleData(raffleId: bigint) {
   };
 }
 
-export function useRaffleEntries(raffleId: bigint) {
+/**
+ * Hook for fetching raffle entry count
+ * 
+ * @param raffleId - The ID of the raffle
+ * @returns Object with entry count and loading state
+ */
+export function useRaffleEntries(raffleId: bigint): UseRaffleEntriesReturn {
   const { data, isLoading, error, refetch } = useReadContract({
     address: RAFFLE_CORE_ADDRESS,
     abi: RAFFLE_CORE_ABI,
@@ -118,7 +245,13 @@ export function useRaffleEntries(raffleId: bigint) {
   };
 }
 
-export function useRaffleParticipants(raffleId: bigint) {
+/**
+ * Hook for fetching raffle participants
+ * 
+ * @param raffleId - The ID of the raffle
+ * @returns Object with participants array and loading state
+ */
+export function useRaffleParticipants(raffleId: bigint): UseRaffleParticipantsReturn {
   const { data, isLoading, error, refetch } = useReadContract({
     address: RAFFLE_CORE_ADDRESS,
     abi: RAFFLE_CORE_ABI,
@@ -134,7 +267,13 @@ export function useRaffleParticipants(raffleId: bigint) {
   };
 }
 
-export function useRaffleWinners(raffleId: bigint) {
+/**
+ * Hook for fetching raffle winners
+ * 
+ * @param raffleId - The ID of the raffle
+ * @returns Object with winners array and loading state
+ */
+export function useRaffleWinners(raffleId: bigint): UseRaffleWinnersReturn {
   const { data, isLoading, error, refetch } = useReadContract({
     address: RAFFLE_CORE_ADDRESS,
     abi: RAFFLE_CORE_ABI,
@@ -150,7 +289,12 @@ export function useRaffleWinners(raffleId: bigint) {
   };
 }
 
-export function useClaimPrize() {
+/**
+ * Hook for claiming a raffle prize
+ * 
+ * @returns Object with claimPrize function and transaction state
+ */
+export function useClaimPrize(): UseClaimPrizeReturn {
   const { address } = useAccount();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -175,7 +319,12 @@ export function useClaimPrize() {
   };
 }
 
-export function useEndRaffle() {
+/**
+ * Hook for ending a raffle
+ * 
+ * @returns Object with endRaffle function and transaction state
+ */
+export function useEndRaffle(): UseEndRaffleReturn {
   const { address } = useAccount();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -200,7 +349,12 @@ export function useEndRaffle() {
   };
 }
 
-export function useTotalRaffles() {
+/**
+ * Hook for fetching total number of raffles
+ * 
+ * @returns Object with total raffles count and loading state
+ */
+export function useTotalRaffles(): UseTotalRafflesReturn {
   const { data, isLoading, error, refetch } = useReadContract({
     address: RAFFLE_CORE_ADDRESS,
     abi: RAFFLE_CORE_ABI,
@@ -209,6 +363,106 @@ export function useTotalRaffles() {
 
   return {
     totalRaffles: data as bigint | undefined,
+    isLoading,
+    error,
+    refetch,
+  };
+}
+
+/**
+ * Batch read multiple raffle data in a single RPC call
+ * Significantly reduces network overhead when fetching multiple raffles
+ * 
+ * @param raffleIds - Array of raffle IDs to fetch
+ * @returns Object containing raffle data array, loading state, and error
+ */
+export function useBatchRaffleData(raffleIds: bigint[]) {
+  const contracts = raffleIds.map(id => ({
+    address: RAFFLE_CORE_ADDRESS,
+    abi: RAFFLE_CORE_ABI,
+    functionName: 'getRaffle' as const,
+    args: [id] as const,
+  }));
+
+  const { data, isLoading, error, refetch } = useReadContracts({
+    contracts,
+  });
+
+  return {
+    raffles: data?.map(result => result.result) || [],
+    isLoading,
+    error,
+    refetch,
+  };
+}
+
+/**
+ * Batch read multiple raffle entries in a single RPC call
+ * 
+ * @param raffleIds - Array of raffle IDs to fetch entries for
+ * @returns Object containing entries array, loading state, and error
+ */
+export function useBatchRaffleEntries(raffleIds: bigint[]) {
+  const contracts = raffleIds.map(id => ({
+    address: RAFFLE_CORE_ADDRESS,
+    abi: RAFFLE_CORE_ABI,
+    functionName: 'totalEntries' as const,
+    args: [id] as const,
+  }));
+
+  const { data, isLoading, error, refetch } = useReadContracts({
+    contracts,
+  });
+
+  return {
+    entries: data?.map(result => result.result as bigint | undefined) || [],
+    isLoading,
+    error,
+    refetch,
+  };
+}
+
+/**
+ * Batch read raffle data with entries in a single optimized call
+ * Combines getRaffle and totalEntries for each raffle ID
+ * 
+ * @param raffleIds - Array of raffle IDs to fetch
+ * @returns Object containing combined raffle data with entries
+ */
+export function useBatchRaffleDataWithEntries(raffleIds: bigint[]) {
+  const contracts = raffleIds.flatMap(id => [
+    {
+      address: RAFFLE_CORE_ADDRESS,
+      abi: RAFFLE_CORE_ABI,
+      functionName: 'getRaffle' as const,
+      args: [id] as const,
+    },
+    {
+      address: RAFFLE_CORE_ADDRESS,
+      abi: RAFFLE_CORE_ABI,
+      functionName: 'totalEntries' as const,
+      args: [id] as const,
+    },
+  ]);
+
+  const { data, isLoading, error, refetch } = useReadContracts({
+    contracts,
+  });
+
+  // Parse results into structured data
+  const rafflesWithEntries = raffleIds.map((id, index) => {
+    const raffleIndex = index * 2;
+    const entriesIndex = index * 2 + 1;
+    
+    return {
+      id,
+      raffle: data?.[raffleIndex]?.result,
+      entries: data?.[entriesIndex]?.result as bigint | undefined,
+    };
+  });
+
+  return {
+    rafflesWithEntries,
     isLoading,
     error,
     refetch,
